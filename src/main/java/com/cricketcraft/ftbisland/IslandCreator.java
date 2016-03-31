@@ -1,6 +1,6 @@
 package com.cricketcraft.ftbisland;
 
-import net.blay09.mods.excompressum.ModItems;
+//import net.blay09.mods.excompressum.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -31,9 +31,9 @@ public class IslandCreator implements Serializable {
             }
         }
 
-        world.setBlock(x + 2, y + 3, z + 1, Blocks.chest);
-        world.getBlock(x + 2, y + 3, z + 1).rotateBlock(world, x + 2, y + 3, z + 1, ForgeDirection.NORTH);
-        TileEntityChest chest = (TileEntityChest) world.getTileEntity(x + 2, y + 3, z + 1);
+        world.setBlock(x + 2, y + 1, z + 1, Blocks.chest);
+        world.getBlock(x + 2, y + 3, z + 1).rotateBlock(world, x + 2, y + 1, z + 1, ForgeDirection.NORTH);
+        TileEntityChest chest = (TileEntityChest) world.getTileEntity(x + 2, y + 1, z + 1);
         chest.setInventorySlotContents(0, new ItemStack(Blocks.water, 1));
         chest.setInventorySlotContents(1, new ItemStack(Blocks.lava, 1));
         chest.setInventorySlotContents(2, new ItemStack(Items.dye, 64, 15));
@@ -44,18 +44,22 @@ public class IslandCreator implements Serializable {
         chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
         chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
         chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-        chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
+        //chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
 
         islandLocations.put(playerName, new IslandPos(x, y, z));
+        try {
+            FTBIslands.saveIslands(islandLocations);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
     public static void joinIsland(String islandName, EntityPlayer player) {
         reloadIslands();
 
-        World world = player.getEntityWorld();
         IslandPos pos = islandLocations.get(islandName);
-        player.setPosition(pos.getX(), pos.getY() + 1, pos.getZ());
+        player.setPositionAndUpdate(pos.getX(), pos.getY() + 1, pos.getZ());
     }
 
     private static void reloadIslands() {
