@@ -1,10 +1,12 @@
 package com.cricketcraft.ftbisland;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -37,11 +39,6 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 3;
-    }
-
-    @Override
     public void processCommand(ICommandSender sender, String[] input) {
         ChunkCoordinates coordinates = sender.getPlayerCoordinates();
         int x = coordinates.posX;
@@ -54,20 +51,20 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
             sender.addChatMessage(new ChatComponentText("Invalid Arguments"));
             return;
         } else if(input.length == 1) {
-            if(input[0].equalsIgnoreCase("create")) {
+            if(input[0].equalsIgnoreCase("create") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
                 IslandCreator.spawnIslandAt(world, x + 10, y, z, sender.getCommandSenderName());
                 try {
                     FTBIslands.saveIslands(IslandCreator.islandLocations);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if(input[0].equalsIgnoreCase("save")) {
+            } else if(input[0].equalsIgnoreCase("save") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
                 try {
                     FTBIslands.saveIslands(IslandCreator.islandLocations);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if(input[0].equalsIgnoreCase("createAll")) {
+            } else if(input[0].equalsIgnoreCase("createAll") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
                 for(IslandCreator.IslandPos pos : FTBIslands.islandLocations) {
                     IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName());
                 }
