@@ -37,7 +37,7 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return 4;
+        return 3;
     }
 
     @Override
