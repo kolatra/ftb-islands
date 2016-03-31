@@ -1,6 +1,8 @@
 package com.cricketcraft.ftbisland;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
@@ -8,7 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:excompressum;required-after:FTBL")
+@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION/*, dependencies = "required-after:excompressum"*/)
 public class FTBIslands {
     public static final String MODID = "ftbisland";
     public static final String NAME = "FTB Islands";
@@ -45,11 +47,11 @@ public class FTBIslands {
     public void preInit(FMLPreInitializationEvent event) {
         File dir = event.getModConfigurationDirectory();
         File directory = new File(dir.getParentFile(), "local");
-        islands = new File(directory.getParentFile(), "islands.ser");
+        islands = new File(directory, "islands.ser");
         try {
             directory.mkdirs();
             islands.createNewFile();
-        } catch (IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }

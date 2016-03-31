@@ -1,8 +1,10 @@
 package com.cricketcraft.ftbisland;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
@@ -11,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpawnIslandCommand implements ICommand {
+public class SpawnIslandCommand extends CommandBase implements ICommand {
     private List<String> aliases;
 
     public SpawnIslandCommand() {
@@ -35,13 +37,18 @@ public class SpawnIslandCommand implements ICommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel() {
+        return 3;
+    }
+
+    @Override
     public void processCommand(ICommandSender sender, String[] input) {
         ChunkCoordinates coordinates = sender.getPlayerCoordinates();
         int x = coordinates.posX;
         int y = coordinates.posY;
         int z = coordinates.posZ;
         World world = sender.getEntityWorld();
-        EntityPlayer player = world.getClosestPlayer(x, y, z, 1);
+        EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
         if(input.length == 0) {
             sender.addChatMessage(new ChatComponentText("Invalid Arguments"));
@@ -49,6 +56,11 @@ public class SpawnIslandCommand implements ICommand {
         } else if(input.length == 1) {
             if(input[0].equalsIgnoreCase("create")) {
                 IslandCreator.spawnIslandAt(world, x + 10, y, z, sender.getCommandSenderName());
+                try {
+                    FTBIslands.saveIslands(IslandCreator.islandLocations);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if(input[0].equalsIgnoreCase("save")) {
                 try {
                     FTBIslands.saveIslands(IslandCreator.islandLocations);
