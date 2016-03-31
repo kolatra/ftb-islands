@@ -3,7 +3,6 @@ package com.cricketcraft.ftbisland;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -51,11 +50,11 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
         if(input.length == 0) {
-            sender.addChatMessage(new ChatComponentText("Invalid Arguments"));
+            sender.addChatMessage(new ChatComponentText("Use /island create to create an island"));
             return;
         } else if(input.length == 1) {
             if(input[0].equalsIgnoreCase("create")) {
-                IslandCreator.spawnIslandAt(world, x + 10, y, z, sender.getCommandSenderName());
+                IslandCreator.createIsland(sender.getCommandSenderName());
                 try {
                     FTBIslands.saveIslands(IslandCreator.islandLocations);
                 } catch (IOException e) {
@@ -68,9 +67,11 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                     e.printStackTrace();
                 }
             } else if(input[0].equalsIgnoreCase("createAll")) {
-                for(IslandCreator.IslandPos pos : FTBIslands.islandLocations) {
+                for(IslandCreator.IslandPos pos : FTBIslands.islandLoc) {
                     IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName());
                 }
+            } else if(input[0].equalsIgnoreCase("help")) {
+                sender.addChatMessage(new ChatComponentText("[FTB Islands] /island create, createall, save, help, join"));
             }
         } else if(input.length == 2) {
             if(input[0].equalsIgnoreCase("join")) {

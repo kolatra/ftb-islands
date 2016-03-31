@@ -26,37 +26,6 @@ minecraft {
     runDir = "run"
 }
 
-repositories {
-    maven {
-        name 'garrett'
-        url 'http://maven.tterrag.com/'
-    }
-    maven {
-        name 'Chickenbones'
-        url 'http://chickenbones.net/maven/'
-    }
-    maven {
-        name 'RX14'
-        url 'http://mvn.rx14.co.uk/repo'
-    }
-    maven {
-        name 'TiConMantle'
-        url 'http://dvs1.progwml6.com/files/maven/'
-    }
-    maven {
-        name 'Mobius Repo'
-        url 'http://mobiusstrip.eu/maven'
-    }
-    ivy {
-        name "MineTweaker"
-        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
-    }
-}
-
-dependencies {
-    compile "exnihilo:Ex-Nihilo:1.38-49:deobf"
-}
-
 processResources
 {
     from(sourceSets.main.resources.srcDirs) {
