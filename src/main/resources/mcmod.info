@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ftbisland",
+  "name": "FTB Islands",
+  "description": "Mod made for the WAPC but got picked up by FTB",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Cricket"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

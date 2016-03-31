@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'forge'
+
+version = "1.0"
+group= "com.cricketcraft.ftbisland"
+archivesBaseName = "ftbisland"
+
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "run"
+}
+
+repositories {
+    maven {
+        name 'garrett'
+        url 'http://maven.tterrag.com/'
+    }
+    maven {
+        name 'Chickenbones'
+        url 'http://chickenbones.net/maven/'
+    }
+    maven {
+        name 'RX14'
+        url 'http://mvn.rx14.co.uk/repo'
+    }
+    maven {
+        name 'TiConMantle'
+        url 'http://dvs1.progwml6.com/files/maven/'
+    }
+    maven {
+        name 'Mobius Repo'
+        url 'http://mobiusstrip.eu/maven'
+    }
+    ivy {
+        name "MineTweaker"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
+    }
+}
+
+dependencies {
+    compile "exnihilo:Ex-Nihilo:1.38-49:deobf"
+}
+
+processResources
+{
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+	
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
