@@ -40,7 +40,11 @@ public class IslandCreator implements Serializable {
         chest.setInventorySlotContents(3, new ItemStack(Items.dye, 64, 15));
         chest.setInventorySlotContents(4, new ItemStack(Items.apple, 16));
         chest.setInventorySlotContents(5, new ItemStack(Blocks.sapling, 8, 0));
-        chest.setInventorySlotContents(6, new ItemStack(ModItems.chickenStick, 1));
+        chest.setInventorySlotContents(6, new ItemStack(Items.spawn_egg, 2, 90));
+        chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
+        chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
+        chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
+        chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
 
         islandLocations.put(playerName, new IslandPos(x, y, z));
         return true;
