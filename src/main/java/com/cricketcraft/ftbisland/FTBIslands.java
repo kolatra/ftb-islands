@@ -49,7 +49,6 @@ public class FTBIslands {
         File directory = new File(dir.getParentFile(), "local");
         islands = new File(directory, "islands.ser");
         try {
-            System.out.println("creating file");
             directory.mkdirs();
             islands.createNewFile();
         } catch(IOException e) {
