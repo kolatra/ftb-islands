@@ -1,5 +1,6 @@
 package com.cricketcraft.ftbisland;
 
+import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpawnIslandCommand implements ICommand {
+public class SpawnIslandCommand extends CommandBase implements ICommand {
     private List<String> aliases;
 
     public SpawnIslandCommand() {
@@ -32,6 +33,11 @@ public class SpawnIslandCommand implements ICommand {
     @Override
     public List getCommandAliases() {
         return aliases;
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 4;
     }
 
     @Override
