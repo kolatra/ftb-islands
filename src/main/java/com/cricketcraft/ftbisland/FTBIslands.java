@@ -31,10 +31,14 @@ public class FTBIslands {
     }
 
     private void addIslandToList(int x) {
-        islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, x * 1000));
-        islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, x * 1000));
-        islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, -x * 1000));
-        islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, -x * 1000));
+        if(x != 0) {
+            islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, x * 1000));
+            islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, x * 1000));
+            islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, -x * 1000));
+            islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, -x * 1000));
+        } else {
+            islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, x * 1000));
+        }
     }
 
     private void loadChestLoot() {
