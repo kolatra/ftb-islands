@@ -1,13 +1,13 @@
 [
 {
-  "modid": "ftbisland",
+  "modid": "FTBI",
   "name": "FTB Islands",
   "description": "Mod made for the WAPC but got picked up by FTB",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["Cricket", "Kolatra],
+  "authorList": ["Cricket", "Kolatra"],
   "credits": "",
   "logoFile": "",
   "screenshots": [],

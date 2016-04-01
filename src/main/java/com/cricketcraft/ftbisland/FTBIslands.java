@@ -10,9 +10,9 @@ import java.util.HashMap;
 
 @Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:excompressum")
 public class FTBIslands {
-    public static final String MODID = "ftbisland";
+    public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.0.1";
     public static File islands;
 
     public static ArrayList<IslandCreator.IslandPos> islandLoc = new ArrayList<IslandCreator.IslandPos>();

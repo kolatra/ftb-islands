@@ -1,6 +1,6 @@
 package com.cricketcraft.ftbisland;
 
-import net.blay09.mods.excompressum.ExCompressum;
+import net.blay09.mods.excompressum.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -45,7 +45,7 @@ public class IslandCreator implements Serializable {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            chest.setInventorySlotContents(10, new ItemStack(ExCompressum.chickenStick, 1));
+            chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
 
             if (islandLocations.size() != 0) {
                 islandLocations.put(playerName, FTBIslands.islandLoc.get(islandLocations.size() + 1));
