@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION/*, dependencies = "required-after:excompressum"*/)
+@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:excompressum")
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
