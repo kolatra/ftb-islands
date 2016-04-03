@@ -73,7 +73,9 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else if(input[0].equalsIgnoreCase("delete") && )
+            } else if(input[0].equalsIgnoreCase("delete") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
+
+            }
         }
     }
 

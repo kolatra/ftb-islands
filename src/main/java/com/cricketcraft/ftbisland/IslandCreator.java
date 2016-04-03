@@ -10,6 +10,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -69,13 +70,17 @@ public class IslandCreator implements Serializable {
 
     public static void joinIsland(String islandName, EntityPlayer player) {
         reloadIslands();
-        IslandPos pos = new IslandPos(0, 60, 0);
-        for(String key : islandLocations.keySet()) {
-            if (key.equalsIgnoreCase(islandName)) {
-                pos = islandLocations.get(key);
+        if (islandLocations.containsKey(islandName)) {
+            IslandPos pos = new IslandPos(0, 60, 0);
+            for(String key : islandLocations.keySet()) {
+                if (key.equalsIgnoreCase(islandName)) {
+                    pos = islandLocations.get(key);
+                }
             }
+            player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
+        } else {
+            player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
         }
-        player.setPositionAndUpdate(pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1);
     }
 
     public static void deleteIsland(String islandName, EntityPlayer player) {
@@ -86,6 +91,8 @@ public class IslandCreator implements Serializable {
     private static void reloadIslands() {
         try {
             islandLocations = FTBIslands.getIslands();
+        } catch (EOFException e) {
+            // silent catch
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
