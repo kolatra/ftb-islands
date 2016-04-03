@@ -59,21 +59,21 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                 }
             } else if(input[0].equalsIgnoreCase("createAll") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
                 for(IslandCreator.IslandPos pos : FTBIslands.islandLoc) {
-                    IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName());
+                    IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName(), player);
                 }
             }
         } else if(input.length == 2) {
             if(input[0].equalsIgnoreCase("join")) {
-                IslandCreator.joinIsland(input[1], player);
+                IslandCreator.joinIsland(input[1].toLowerCase(), player);
             } else if(input[0].equalsIgnoreCase("create") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
-                if(!IslandCreator.createIsland(world, input[1]))
+                if(!IslandCreator.createIsland(world, input[1].toLowerCase(), player))
                     sender.addChatMessage(new ChatComponentText("You've already created an island for that player"));
                 try {
                     FTBIslands.saveIslands(IslandCreator.islandLocations);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            } else if(input[0].equalsIgnoreCase("delete") && )
         }
     }
 

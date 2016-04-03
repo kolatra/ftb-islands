@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -16,14 +17,14 @@ import java.util.HashMap;
 public class IslandCreator implements Serializable {
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
 
-    public static boolean createIsland(World world, String playerName) {
+    public static boolean createIsland(World world, String playerName, EntityPlayer player) {
         reloadIslands();
         IslandPos pos = FTBIslands.islandLoc.get(islandLocations.size() + 1);
-        spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName);
+        spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName, player);
         return true;
     }
 
-    public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName) {
+    public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if(!islandLocations.containsKey(playerName)) {
             for (int c = 0; c < 3; c++) {
@@ -35,8 +36,8 @@ public class IslandCreator implements Serializable {
             world.setBlock(x + 2, y + 1, z + 1, Blocks.chest);
             world.getBlock(x + 2, y + 1, z + 1).rotateBlock(world, x + 2, y + 1, z + 1, ForgeDirection.WEST);
             TileEntityChest chest = (TileEntityChest) world.getTileEntity(x + 2, y + 1, z + 1);
-            chest.setInventorySlotContents(0, new ItemStack(Blocks.water, 1));
-            chest.setInventorySlotContents(1, new ItemStack(Blocks.lava, 1));
+            chest.setInventorySlotContents(0, new ItemStack(Blocks.flowing_water, 1));
+            chest.setInventorySlotContents(1, new ItemStack(Blocks.flowing_lava, 1));
             chest.setInventorySlotContents(2, new ItemStack(Items.dye, 64, 15));
             chest.setInventorySlotContents(3, new ItemStack(Items.dye, 64, 15));
             chest.setInventorySlotContents(4, new ItemStack(Items.apple, 16));
@@ -59,6 +60,7 @@ public class IslandCreator implements Serializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            player.addChatMessage(new ChatComponentText(String.format("Created island named %s at %d, %d, %d", playerName, x, y, z)));
             return true;
         } else {
             return false;
@@ -67,9 +69,18 @@ public class IslandCreator implements Serializable {
 
     public static void joinIsland(String islandName, EntityPlayer player) {
         reloadIslands();
+        IslandPos pos = new IslandPos(0, 60, 0);
+        for(String key : islandLocations.keySet()) {
+            if (key.equalsIgnoreCase(islandName)) {
+                pos = islandLocations.get(key);
+            }
+        }
+        player.setPositionAndUpdate(pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1);
+    }
 
-        IslandPos pos = islandLocations.get(islandName);
-        player.setPositionAndUpdate(pos.getX(), pos.getY() + 1, pos.getZ());
+    public static void deleteIsland(String islandName, EntityPlayer player) {
+        player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
+        islandLocations.remove(islandName);
     }
 
     private static void reloadIslands() {
