@@ -81,6 +81,8 @@ public class IslandCreator implements Serializable {
                         pos = islandLocations.get(key);
                     }
                 }
+                if (player.dimension != 0)
+                    player.travelToDimension(0);
                 player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
             } else {
                 player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
