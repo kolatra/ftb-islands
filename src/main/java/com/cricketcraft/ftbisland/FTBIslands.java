@@ -1,5 +1,8 @@
 package com.cricketcraft.ftbisland;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -8,12 +11,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:excompressum")
+@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION/*, dependencies = "required-after:excompressum"*/)
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
     public static final String VERSION = "1.1";
     public static File islands;
+    public static Logger logger;
 
     public static ArrayList<IslandCreator.IslandPos> islandLoc = new ArrayList<IslandCreator.IslandPos>();
 
@@ -47,6 +51,7 @@ public class FTBIslands {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        logger = LogManager.getLogger("FTBI");
         File dir = event.getModConfigurationDirectory();
         File directory = new File(dir.getParentFile(), "local");
         islands = new File(directory, "islands.ser");

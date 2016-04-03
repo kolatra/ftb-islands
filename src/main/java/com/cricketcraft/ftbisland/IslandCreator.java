@@ -1,6 +1,6 @@
 package com.cricketcraft.ftbisland;
 
-import net.blay09.mods.excompressum.ModItems;
+//import net.blay09.mods.excompressum.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,7 +21,7 @@ public class IslandCreator implements Serializable {
     public static boolean createIsland(World world, String playerName, EntityPlayer player) {
         reloadIslands();
         IslandPos pos = FTBIslands.islandLoc.get(islandLocations.size() + 1);
-        spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName, player);
+        spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName, (player != null ? player : null));
         return true;
     }
 
@@ -47,7 +47,7 @@ public class IslandCreator implements Serializable {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
+            //chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
 
             if (islandLocations.size() != 0) {
                 islandLocations.put(playerName, FTBIslands.islandLoc.get(islandLocations.size() + 1));
@@ -61,7 +61,8 @@ public class IslandCreator implements Serializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            player.addChatMessage(new ChatComponentText(String.format("Created island named %s at %d, %d, %d", playerName, x, y, z)));
+            if (player != null)
+                player.addChatMessage(new ChatComponentText(String.format("Created island named %s at %d, %d, %d", playerName, x, y, z)));
             return true;
         } else {
             return false;
@@ -69,22 +70,27 @@ public class IslandCreator implements Serializable {
     }
 
     public static void joinIsland(String islandName, EntityPlayer player) {
-        reloadIslands();
-        if (islandLocations.containsKey(islandName)) {
-            IslandPos pos = new IslandPos(0, 60, 0);
-            for(String key : islandLocations.keySet()) {
-                if (key.equalsIgnoreCase(islandName)) {
-                    pos = islandLocations.get(key);
-                }
-            }
-            player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
+        if (player == null) {
+            FTBIslands.logger.info("The join command must be run in game.");
         } else {
-            player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
+            reloadIslands();
+            if (islandLocations.containsKey(islandName)) {
+                IslandPos pos = new IslandPos(0, 60, 0);
+                for(String key : islandLocations.keySet()) {
+                    if (key.equalsIgnoreCase(islandName)) {
+                        pos = islandLocations.get(key);
+                    }
+                }
+                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
+            } else {
+                player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
+            }
         }
     }
 
     public static void deleteIsland(String islandName, EntityPlayer player) {
-        player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
+        if (player != null)
+            player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
         islandLocations.remove(islandName);
     }
 
