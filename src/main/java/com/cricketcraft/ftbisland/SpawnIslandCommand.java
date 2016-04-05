@@ -58,17 +58,17 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                         IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName(), player);
                     }
                 } else if(input[0].equalsIgnoreCase("list")) {
-                    StringBuilder builder = new StringBuilder();
-                    try {
-                        for(String string : FTBIslands.getIslands().keySet()) {
-                            builder.append(string + ", ");
-                        }
-                        player.addChatMessage(new ChatComponentText("Current Islands: " + builder.toString()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+//                    StringBuilder builder = new StringBuilder();
+//                    try {
+//                        for(String string : FTBIslands.getIslands().keySet()) {
+//                            builder.append(string + ", ");
+//                        }
+//                        player.addChatMessage(new ChatComponentText("Current Islands: " + builder.toString()));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (ClassNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
                 } else if(input[0].equalsIgnoreCase("help")) {
                     player.addChatMessage(new ChatComponentText("Commands are: list, createAll(Only use if you don't want the join command), save, join <name>, create <name>, delete <name, rename <name>, setSpawn <name>"));
                 }
@@ -113,17 +113,17 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                         IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(),  sender.getCommandSenderName(), null);
                     }
                 } else if(input[0].equalsIgnoreCase("list")) {
-                    StringBuilder builder = new StringBuilder();
-                    try {
-                        for(String string : FTBIslands.getIslands().keySet()) {
-                            builder.append(string + ", ");
-                        }
-                        FTBIslands.logger.info(("Current Islands: " + builder.toString()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+//                    StringBuilder builder = new StringBuilder();
+//                    try {
+//                        for(String string : FTBIslands.getIslands().keySet()) {
+//                            builder.append(string + ", ");
+//                        }
+//                        FTBIslands.logger.info(("Current Islands: " + builder.toString()));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (ClassNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
                 } else if(input[0].equalsIgnoreCase("help")) {
                     FTBIslands.logger.info((new ChatComponentText("Commands are: list, createAll(Only use if you don't want the join command), save, join <name>, create <name>, delete <name, rename <name>, setSpawn <name>")));
                 }
