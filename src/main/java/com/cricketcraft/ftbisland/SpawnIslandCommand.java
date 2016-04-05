@@ -57,6 +57,20 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                     for(IslandCreator.IslandPos pos : FTBIslands.islandLoc) {
                         IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), sender.getCommandSenderName(), player);
                     }
+                } else if(input[0].equalsIgnoreCase("list")) {
+                    StringBuilder builder = new StringBuilder();
+                    try {
+                        for(String string : FTBIslands.getIslands().keySet()) {
+                            builder.append(string + ", ");
+                        }
+                        player.addChatMessage(new ChatComponentText("Current Islands: " + builder.toString()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if(input[0].equalsIgnoreCase("help")) {
+                    player.addChatMessage(new ChatComponentText("Commands are: list, createAll(Only use if you don't want the join command), save, join <name>, create <name>, delete <name, rename <name>, setSpawn <name>"));
                 }
             } else if(input.length == 2) {
                 if(input[0].equalsIgnoreCase("join")) {
@@ -71,6 +85,14 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                     }
                 } else if(input[0].equalsIgnoreCase("delete") && MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
                     IslandCreator.deleteIsland(input[1].toLowerCase(), player);
+                } else if (input[0].equalsIgnoreCase("setSpawn")) {
+                    IslandCreator.setSpawnForIsland(input[1].toLowerCase(), sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ);
+                    sender.addChatMessage(new ChatComponentText(String.format("Set spawn for island %s to %d, %d, %d", input[1].toLowerCase(), sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ)));
+                }
+            } else if(input.length == 3) {
+                if (input[0].equalsIgnoreCase("rename")) {
+                    IslandCreator.renameIsland(input[1].toLowerCase(), input[2].toLowerCase());
+                    sender.addChatMessage(new ChatComponentText(String.format("Renamed island %s to %s", input[1].toLowerCase(), input[2].toLowerCase())));
                 }
             }
         } else {
@@ -90,6 +112,20 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                     for (IslandCreator.IslandPos pos : FTBIslands.islandLoc) {
                         IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(),  sender.getCommandSenderName(), null);
                     }
+                } else if(input[0].equalsIgnoreCase("list")) {
+                    StringBuilder builder = new StringBuilder();
+                    try {
+                        for(String string : FTBIslands.getIslands().keySet()) {
+                            builder.append(string + ", ");
+                        }
+                        FTBIslands.logger.info(("Current Islands: " + builder.toString()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else if(input[0].equalsIgnoreCase("help")) {
+                    FTBIslands.logger.info((new ChatComponentText("Commands are: list, createAll(Only use if you don't want the join command), save, join <name>, create <name>, delete <name, rename <name>, setSpawn <name>")));
                 }
             } else if (input.length == 2) {
                 if (input[0].equalsIgnoreCase("join")) {
@@ -104,6 +140,16 @@ public class SpawnIslandCommand extends CommandBase implements ICommand {
                     }
                 } else if (input[0].equalsIgnoreCase("delete")) {
                     IslandCreator.deleteIsland(input[1].toLowerCase(), null);
+                }
+            } else if(input.length == 3) {
+                if (input[0].equalsIgnoreCase("rename")) {
+                    IslandCreator.renameIsland(input[1].toLowerCase(), input[2].toLowerCase());
+                    FTBIslands.logger.info(String.format("Renamed island %s to %s", input[1].toLowerCase(), input[2].toLowerCase()));
+                }
+            } else if(input.length == 5) {
+                if (input[0].equalsIgnoreCase("setSpawn")) {
+                    IslandCreator.setSpawnForIsland(input[1].toLowerCase(), Integer.valueOf(input[2]), Integer.valueOf(input[3]), Integer.valueOf(input[4]));
+                    FTBIslands.logger.info(String.format("Set island spawn for %s to %d, %d, %d", input[1].toLowerCase(), Integer.valueOf(input[2]), Integer.valueOf(input[3]), Integer.valueOf(input[4])));
                 }
             }
         }
