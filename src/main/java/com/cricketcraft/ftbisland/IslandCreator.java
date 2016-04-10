@@ -1,9 +1,11 @@
 package com.cricketcraft.ftbisland;
 
-import net.blay09.mods.excompressum.ModItems;
+import com.google.gson.*;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
@@ -12,11 +14,26 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
-public class IslandCreator implements Serializable {
+import cpw.mods.fml.common.registry.GameRegistry;
+
+public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeserializer<IslandCreator> {
+    public static final Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandCreator.class, new IslandCreator()).create();
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
+    public final String playerName;
+    public final IslandPos pos;
+
+    public IslandCreator() {
+        playerName = null;
+        pos = null;
+    }
+
+    public IslandCreator(String playerName, IslandPos pos) {
+        this.playerName = playerName;
+        this.pos = pos;
+    }
 
     public static boolean createIsland(World world, String playerName, EntityPlayer player) {
         reloadIslands();
@@ -47,7 +64,9 @@ public class IslandCreator implements Serializable {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            chest.setInventorySlotContents(10, new ItemStack(ModItems.chickenStick, 1));
+            Item chickenStick = GameRegistry.findItem("excompressum", "chickenStick");
+            if (chickenStick != null)
+                chest.setInventorySlotContents(10, new ItemStack(chickenStick, 1));
 
             if (islandLocations.size() != 0) {
                 islandLocations.put(playerName, FTBIslands.islandLoc.get(islandLocations.size() + 1));
@@ -108,10 +127,68 @@ public class IslandCreator implements Serializable {
         }
     }
 
-    public static class IslandPos implements Serializable {
+    public static IslandCreator createFromJson(String string) {
+        try {
+            return jsonSerializer.fromJson(string, IslandCreator.class);
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public IslandCreator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        if (!json.isJsonPrimitive()) {
+            JsonObject jsonIsland = (JsonObject) json;
+            IslandPos pos = null;
+            String playerName = null;
+            int x = 0;
+            int y = 0;
+            int z = 0;
+            if (jsonIsland.get("x") != null && jsonIsland.get("y") != null && jsonIsland.get("z") != null) {
+                x = jsonIsland.get("x").getAsInt();
+                y = jsonIsland.get("y").getAsInt();
+                z = jsonIsland.get("z").getAsInt();
+            }
+            if (jsonIsland.get("position") != null) {
+                pos = new IslandPos(x, y, z).deserialize(jsonIsland.get("position").getAsJsonObject(), typeOfT, context);
+            }
+            if (jsonIsland.get("playerName") != null) {
+                playerName = jsonIsland.get("name").getAsString();
+            }
+            if (pos != null && playerName != null) {
+                return new IslandCreator(playerName, pos);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public JsonElement serialize(IslandCreator creator, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject jsonIsland = new JsonObject();
+        jsonIsland.add("position", jsonSerializer.toJsonTree(creator.pos));
+        jsonIsland.add("playerName", jsonSerializer.toJsonTree(creator.playerName));
+        jsonIsland.add("x", jsonSerializer.toJsonTree(creator.pos.getX()));
+        jsonIsland.add("y", jsonSerializer.toJsonTree(creator.pos.getY()));
+        jsonIsland.add("z", jsonSerializer.toJsonTree(creator.pos.getZ()));
+        return jsonIsland;
+    }
+
+    public static class IslandPos implements JsonSerializer<IslandPos>, JsonDeserializer<IslandPos> {
+        private Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandPos.class, new IslandPos()).create();
         private int x;
         private int y;
         private int z;
+
+        private IslandPos() {
+            this.x = 0;
+            this.y = 0;
+            this.z = 0;
+        }
 
         public IslandPos(int x, int y, int z) {
             this.x = x;
@@ -129,6 +206,16 @@ public class IslandCreator implements Serializable {
 
         public int getZ() {
             return z;
+        }
+
+        @Override
+        public IslandPos deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return null;
+        }
+
+        @Override
+        public JsonElement serialize(IslandPos pos, Type typeOfSrc, JsonSerializationContext context) {
+            return null;
         }
     }
 }
