@@ -1,5 +1,7 @@
 package com.cricketcraft.ftbisland;
 
+import com.cricketcraft.ftbisland.commands.*;
+import com.cricketcraft.ftbisland.util.IslandCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +18,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION)
+@Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:FTBU", acceptableRemoteVersions = "*")
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
@@ -28,7 +30,14 @@ public class FTBIslands {
 
     @Mod.EventHandler
     public void serverLoading(FMLServerStartingEvent event) {
-        event.registerServerCommand(new SpawnIslandCommand());
+        event.registerServerCommand(new CreateAllIslandsCommand());
+        event.registerServerCommand(new CreateIslandsCommand());
+        event.registerServerCommand(new DeleteIslandCommand());
+        event.registerServerCommand(new JoinIslandCommand());
+        event.registerServerCommand(new ListIslandsCommand());
+        event.registerServerCommand(new RenameIslandCommand());
+        event.registerServerCommand(new SaveIslandsCommand());
+        event.registerServerCommand(new SetIslandSpawnCommand());
         loadIslands();
         loadChestLoot();
     }

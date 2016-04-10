@@ -1,5 +1,6 @@
-package com.cricketcraft.ftbisland;
+package com.cricketcraft.ftbisland.util;
 
+import com.cricketcraft.ftbisland.FTBIslands;
 import com.google.gson.*;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -88,35 +89,7 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
         }
     }
 
-    public static void joinIsland(String islandName, EntityPlayer player) {
-        if (player == null) {
-            FTBIslands.logger.info("The join command must be run in game.");
-        } else {
-            reloadIslands();
-            if (islandLocations.containsKey(islandName)) {
-                IslandPos pos = new IslandPos(0, 60, 0);
-                for(String key : islandLocations.keySet()) {
-                    if (key.equalsIgnoreCase(islandName)) {
-                        pos = islandLocations.get(key);
-                    }
-                }
-                if (player.dimension != 0)
-                    player.travelToDimension(0);
-                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
-            } else {
-                player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
-            }
-        }
-    }
-
-    public static void deleteIsland(String islandName, EntityPlayer player) {
-        if (player != null)
-            player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
-        islandLocations.remove(islandName);
-        save();
-    }
-
-    private static void reloadIslands() {
+    protected static void reloadIslands() {
         try {
             islandLocations = FTBIslands.getIslands();
         } catch (EOFException e) {
@@ -179,21 +152,7 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
         return jsonIsland;
     }
 
-    public static void renameIsland(String oldName, String newName) {
-        IslandPos pos = islandLocations.get(oldName);
-        islandLocations.remove(oldName);
-        islandLocations.put(newName, pos);
-        save();
-    }
-
-    public static void setSpawnForIsland(String s, int x, int y, int z) {
-        IslandPos pos = new IslandPos(x, y, z);
-        islandLocations.remove(s);
-        islandLocations.put(s, pos);
-        save();
-    }
-
-    private static void save() {
+    protected static void save() {
         try {
             FTBIslands.saveIslands(islandLocations);
         } catch (IOException e) {
