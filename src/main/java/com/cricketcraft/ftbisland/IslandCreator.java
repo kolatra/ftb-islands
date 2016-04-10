@@ -113,6 +113,7 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
         if (player != null)
             player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
         islandLocations.remove(islandName);
+        save();
     }
 
     private static void reloadIslands() {
@@ -126,7 +127,7 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
             e.printStackTrace();
         }
     }
-
+    
     public static IslandCreator createFromJson(String string) {
         try {
             return jsonSerializer.fromJson(string, IslandCreator.class);
@@ -176,6 +177,28 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
         jsonIsland.add("y", jsonSerializer.toJsonTree(creator.pos.getY()));
         jsonIsland.add("z", jsonSerializer.toJsonTree(creator.pos.getZ()));
         return jsonIsland;
+    }
+
+    public static void renameIsland(String oldName, String newName) {
+        IslandPos pos = islandLocations.get(oldName);
+        islandLocations.remove(oldName);
+        islandLocations.put(newName, pos);
+        save();
+    }
+
+    public static void setSpawnForIsland(String s, int x, int y, int z) {
+        IslandPos pos = new IslandPos(x, y, z);
+        islandLocations.remove(s);
+        islandLocations.put(s, pos);
+        save();
+    }
+
+    private static void save() {
+        try {
+            FTBIslands.saveIslands(islandLocations);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class IslandPos implements JsonSerializer<IslandPos>, JsonDeserializer<IslandPos> {
