@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeserializer<IslandCreator> {
+public class IslandCreator {
     public static final Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandCreator.class, new IslandCreator()).create();
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
     public final String playerName;
@@ -83,6 +83,8 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
             }
             if (player != null)
                 player.addChatMessage(new ChatComponentText(String.format("Created island named %s at %d, %d, %d", playerName, x, y, z)));
+            else
+                FTBIslands.logger.info(String.format("Created island named %s at %d %d %d", playerName, x, y, z));
             return true;
         } else {
             return false;
@@ -100,57 +102,6 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
             e.printStackTrace();
         }
     }
-    
-    public static IslandCreator createFromJson(String string) {
-        try {
-            return jsonSerializer.fromJson(string, IslandCreator.class);
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public IslandCreator deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if (!json.isJsonPrimitive()) {
-            JsonObject jsonIsland = (JsonObject) json;
-            IslandPos pos = null;
-            String playerName = null;
-            int x = 0;
-            int y = 0;
-            int z = 0;
-            if (jsonIsland.get("x") != null && jsonIsland.get("y") != null && jsonIsland.get("z") != null) {
-                x = jsonIsland.get("x").getAsInt();
-                y = jsonIsland.get("y").getAsInt();
-                z = jsonIsland.get("z").getAsInt();
-            }
-            if (jsonIsland.get("position") != null) {
-                pos = new IslandPos(x, y, z).deserialize(jsonIsland.get("position").getAsJsonObject(), typeOfT, context);
-            }
-            if (jsonIsland.get("playerName") != null) {
-                playerName = jsonIsland.get("name").getAsString();
-            }
-            if (pos != null && playerName != null) {
-                return new IslandCreator(playerName, pos);
-            } else {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public JsonElement serialize(IslandCreator creator, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject jsonIsland = new JsonObject();
-        jsonIsland.add("position", jsonSerializer.toJsonTree(creator.pos));
-        jsonIsland.add("playerName", jsonSerializer.toJsonTree(creator.playerName));
-        jsonIsland.add("x", jsonSerializer.toJsonTree(creator.pos.getX()));
-        jsonIsland.add("y", jsonSerializer.toJsonTree(creator.pos.getY()));
-        jsonIsland.add("z", jsonSerializer.toJsonTree(creator.pos.getZ()));
-        return jsonIsland;
-    }
 
     protected static void save() {
         try {
@@ -161,16 +112,10 @@ public class IslandCreator implements JsonSerializer<IslandCreator>, JsonDeseria
     }
 
     public static class IslandPos implements JsonSerializer<IslandPos>, JsonDeserializer<IslandPos> {
-        private Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandPos.class, new IslandPos()).create();
+        //private Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandPos.class, new IslandPos()).create();
         private int x;
         private int y;
         private int z;
-
-        private IslandPos() {
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
-        }
 
         public IslandPos(int x, int y, int z) {
             this.x = x;

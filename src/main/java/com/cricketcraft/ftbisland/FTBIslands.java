@@ -30,6 +30,7 @@ public class FTBIslands {
 
     @Mod.EventHandler
     public void serverLoading(FMLServerStartingEvent event) {
+        logger.info("Registering commands.");
         event.registerServerCommand(new CreateAllIslandsCommand());
         event.registerServerCommand(new CreateIslandsCommand());
         event.registerServerCommand(new DeleteIslandCommand());
@@ -38,6 +39,7 @@ public class FTBIslands {
         event.registerServerCommand(new RenameIslandCommand());
         event.registerServerCommand(new SaveIslandsCommand());
         event.registerServerCommand(new SetIslandSpawnCommand());
+        logger.info("Finished registering commands.");
         loadIslands();
         loadChestLoot();
     }

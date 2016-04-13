@@ -1,19 +1,28 @@
 package com.cricketcraft.ftbisland.commands;
 
+import com.cricketcraft.ftbisland.FTBIslands;
+import com.cricketcraft.ftbisland.util.IslandCreator;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListIslandsCommand extends CommandBase implements ICommand {
     private List<String> aliases;
 
     public ListIslandsCommand() {
         aliases = new ArrayList<String>();
-        aliases.add("island list");
-        aliases.add("islands list");
+        aliases.add("island_list");
+        aliases.add("islands_list");
     }
 
     @Override
@@ -23,11 +32,22 @@ public class ListIslandsCommand extends CommandBase implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "island list";
+        return "island_list";
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-
+        final EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+        try {
+            for (Map.Entry<String, IslandCreator.IslandPos> entry : FTBIslands.getIslands().entrySet()) {
+                String key = entry.getKey();
+                player.addChatComponentMessage(new ChatComponentText(key));
+            }
+            //FTBIslands.getIslands().forEach((k, v) -> player.addChatComponentMessage(new ChatComponentText(k)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 /**
+ * Deprecated
  * Use the specific commands instead
  */
 @Deprecated

@@ -24,8 +24,6 @@ public class IslandUtils {
         save();
     }
 
-
-
     public static void joinIsland(String islandName, EntityPlayer player) {
         if (player == null) {
             FTBIslands.logger.info("The join command must be run in game.");

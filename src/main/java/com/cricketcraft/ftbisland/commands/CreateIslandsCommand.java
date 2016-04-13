@@ -1,9 +1,13 @@
 package com.cricketcraft.ftbisland.commands;
 
+import com.cricketcraft.ftbisland.util.IslandCreator;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +17,8 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
 
     public CreateIslandsCommand() {
         aliases = new ArrayList<String>();
-        aliases.add("island create");
-        aliases.add("islands create");
+        aliases.add("island_create");
+        aliases.add("islands_create");
     }
 
     @Override
@@ -34,7 +38,7 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "create <name> or create <name> <player>";
+        return "island_create <name> or create <name> <player>";
     }
 
     @Override
@@ -50,6 +54,10 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
+        World world = sender.getEntityWorld();
+        EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(sender.getCommandSenderName());
+        if (!IslandCreator.createIsland(world, input[0], player != null ? player : null)) {
 
+        }
     }
 }
