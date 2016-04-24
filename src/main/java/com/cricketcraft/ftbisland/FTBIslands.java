@@ -45,7 +45,7 @@ public class FTBIslands {
     }
 
     private void loadIslands() {
-        for(int c = 0; c < 100; c++) {
+        for(int c = 0; c < 9001; c++) {
             addIslandToList(c);
         }
     }
