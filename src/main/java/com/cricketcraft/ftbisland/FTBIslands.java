@@ -70,29 +70,51 @@ public class FTBIslands {
         logger = LogManager.getLogger("FTBI");
         File dir = event.getModConfigurationDirectory();
         File directory = new File(dir.getParentFile(), "local");
-        islands = new File(directory, "islands.ser");
+        islands = new File(directory, "islands.nbt");
         try {
             directory.mkdirs();
-            islands.createNewFile();
         } catch(IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
+        NBTTagCompound islandNbt = new NBTTagCompound();
+        NBTTagList isleData = new NBTTagList();
+        for(java.util.Map.Entry<String, IslandCreator.IslandPos> entry : map.values())
+        {
+            NBTTagCompound single = new NBTTagCompound();
+            single.setString("p", entry.getKey());
+            single.setInteger("x",entry.getValue().getX());
+            single.setByte("y",(byte)(entry.getValue().getY()-128));
+            single.setInteger("z",entry.getValue().getZ());            
+            isleData.appendTag(single);
+        }        
+        islandNbt.setTag("data", isleData);
         FileOutputStream outputStream = new FileOutputStream(islands);
-        ObjectOutputStream out = new ObjectOutputStream(outputStream);
-        out.writeObject(map);
-        out.close();
+        CompressedStreamTools.writeCompressed(islandNbt, outputStream);
         outputStream.close();
     }
 
     public static HashMap<String, IslandCreator.IslandPos> getIslands() throws IOException, ClassNotFoundException {
+        HashMap<String, IslandCreator.IslandPos> islands = null;
+        if(!islands.exists())
+        {
+            islands = new HashMap<String, IslandCreator.IslandPos>();
+            return islands;
+        }
+        
         FileInputStream fileIn = new FileInputStream(islands);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
-        HashMap<String, IslandCreator.IslandPos> retVal = (HashMap<String, IslandCreator.IslandPos>) in.readObject();
-        in.close();
+        NBTTagCompound islandNbt = CompressedStreamTools.readCompressed(new FileInputStream(file));
         fileIn.close();
+        NBTTagList isleData = islandNbt.getTagList("data");
+        islands = new HashMap<String, IslandCreator.IslandPos>(isleData.tagCount()+ (int)(isleData.tagCount()*0.5));
+        for (int index = 0; index < isleData.tagCount(); index++)
+        {
+            NBTTagCompound singleton = isleData.getCompoundTagAt(index);
+            islands.put(single.getString("p"), new IslandCreator.IslandPos(single.getInteger("x"), single.getByte("y")+128, single.getInteger("z")));
+        }
+
         return retVal;
     }
 }
