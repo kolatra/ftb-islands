@@ -135,6 +135,10 @@ public class IslandCreator {
             return z;
         }
 
+        public int hashCode() {
+            return ((y * 31 + x) * 31 + z) * 17 + y;
+        }
+
         @Override
         public IslandPos deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             return null;
