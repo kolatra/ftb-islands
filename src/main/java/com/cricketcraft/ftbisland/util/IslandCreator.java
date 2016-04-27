@@ -21,7 +21,6 @@ import java.util.HashMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class IslandCreator {
-    public static final Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandCreator.class, new IslandCreator()).create();
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
     public final String playerName;
     public final IslandPos pos;
@@ -43,6 +42,7 @@ public class IslandCreator {
         return true;
     }
 
+    private static final Item chickenStick = GameRegistry.findItem("excompressum", "chickenStick");
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if(!islandLocations.containsKey(playerName)) {
@@ -65,7 +65,7 @@ public class IslandCreator {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            Item chickenStick = GameRegistry.findItem("excompressum", "chickenStick");
+            
             if (chickenStick != null)
                 chest.setInventorySlotContents(10, new ItemStack(chickenStick, 1));
 
@@ -111,15 +111,14 @@ public class IslandCreator {
         }
     }
 
-    public static class IslandPos implements JsonSerializer<IslandPos>, JsonDeserializer<IslandPos> {
-        //private Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandPos.class, new IslandPos()).create();
+    public static class IslandPos {
         private int x;
-        private int y;
+        private byte y;
         private int z;
 
         public IslandPos(int x, int y, int z) {
             this.x = x;
-            this.y = y;
+            this.y = (byte)(y-128);
             this.z = z;
         }
 
@@ -128,7 +127,7 @@ public class IslandCreator {
         }
 
         public int getY() {
-            return y;
+            return y+128;
         }
 
         public int getZ() {
@@ -138,15 +137,6 @@ public class IslandCreator {
         public int hashCode() {
             return ((y * 31 + x) * 31 + z) * 17 + y;
         }
-
-        @Override
-        public IslandPos deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return null;
-        }
-
-        @Override
-        public JsonElement serialize(IslandPos pos, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
-        }
+        
     }
 }
