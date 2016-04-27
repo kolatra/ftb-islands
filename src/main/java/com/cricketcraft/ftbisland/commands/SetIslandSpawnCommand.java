@@ -31,6 +31,10 @@ public class SetIslandSpawnCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
+        if (input.length < 4)
+        {
+            return;
+        }
         IslandUtils.setSpawnForIsland(input[0], Integer.getInteger(input[1]), Integer.getInteger(input[2]), Integer.getInteger(input[3]));
     }
 }
