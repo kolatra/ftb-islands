@@ -1,15 +1,18 @@
 package com.kolatra.ftbislands;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.kolatra.ftbislands.commands.CreateAllIslandsCommand;
 import com.kolatra.ftbislands.commands.CreateIslandsCommand;
 import com.kolatra.ftbislands.commands.DeleteIslandCommand;
-import com.kolatra.ftbislands.commands.ListIslandsCommand;
-import com.kolatra.ftbislands.util.IslandCreator;
-import com.kolatra.ftbislands.commands.CreateAllIslandsCommand;
 import com.kolatra.ftbislands.commands.JoinIslandCommand;
+import com.kolatra.ftbislands.commands.ListIslandsCommand;
 import com.kolatra.ftbislands.commands.RenameIslandCommand;
 import com.kolatra.ftbislands.commands.SaveIslandsCommand;
 import com.kolatra.ftbislands.commands.SetIslandSpawnCommand;
+import com.kolatra.ftbislands.util.IslandCreator;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,14 +23,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+
+import net.minecraft.client.util.JsonException;
 
 @Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:FTBU", acceptableRemoteVersions = "*")
 public class FTBIslands {
@@ -93,8 +97,7 @@ public class FTBIslands {
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
         String s = new GsonBuilder().create().toJson(map);
         FileOutputStream outputStream = new FileOutputStream(islands);
-//        ObjectOutputStream out = new ObjectOutputStream(outputStream);
-        FileUtils.writeStringToFile(islands, s); // possibly?
+        FileUtils.writeStringToFile(islands, s); 
         DataOutputStream out = new DataOutputStream(outputStream);
         out.close();
         outputStream.close();
@@ -102,10 +105,8 @@ public class FTBIslands {
 
     public static HashMap<String, IslandCreator.IslandPos> getIslands() throws IOException, ClassNotFoundException {
         FileInputStream fileIn = new FileInputStream(islands);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
-        HashMap<String, IslandCreator.IslandPos> retVal = (HashMap<String, IslandCreator.IslandPos>) in.readObject();
-        in.close();
+        HashMap<String, IslandCreator.IslandPos> map = new Gson().fromJson(FileUtils.readFileToString(islands), new TypeToken<HashMap<String, IslandCreator.IslandPos>>(){}.getType());
         fileIn.close();
-        return retVal;
+        return map;
     }
 }
