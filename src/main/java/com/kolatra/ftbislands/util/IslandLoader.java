@@ -1,4 +1,4 @@
-package com.cricketcraft.ftbisland.util;
+package com.kolatra.ftbislands.util;
 
 import java.io.File;
 

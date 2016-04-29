@@ -2,13 +2,13 @@
 {
   "modid": "FTBI",
   "name": "FTB Islands",
-  "description": "Mod made for the WAPC but got picked up by FTB",
+  "description": "A mod to assist in creating Islands in FTB Infinity Evolved Skyblock",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Cricket", "Kolatra"],
-  "credits": "",
+  "credits": "Cricket, who made the mod for WAPC",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

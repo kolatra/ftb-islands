@@ -1,18 +1,16 @@
-package com.cricketcraft.ftbisland.commands;
+package com.kolatra.ftbislands.commands;
 
-import com.cricketcraft.ftbisland.FTBIslands;
-import com.cricketcraft.ftbisland.util.IslandCreator;
+import com.kolatra.ftbislands.FTBIslands;
+import com.kolatra.ftbislands.util.IslandCreator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.World;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

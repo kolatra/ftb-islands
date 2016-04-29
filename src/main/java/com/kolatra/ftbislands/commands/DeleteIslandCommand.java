@@ -1,7 +1,7 @@
-package com.cricketcraft.ftbisland.commands;
+package com.kolatra.ftbislands.commands;
 
-import com.cricketcraft.ftbisland.FTBIslands;
-import com.cricketcraft.ftbisland.util.IslandUtils;
+import com.kolatra.ftbislands.FTBIslands;
+import com.kolatra.ftbislands.util.IslandUtils;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;

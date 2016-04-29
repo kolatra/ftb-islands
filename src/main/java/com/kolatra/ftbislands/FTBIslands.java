@@ -1,16 +1,27 @@
-package com.cricketcraft.ftbisland;
+package com.kolatra.ftbislands;
 
-import com.cricketcraft.ftbisland.commands.*;
-import com.cricketcraft.ftbisland.util.IslandCreator;
+import com.google.gson.GsonBuilder;
+import com.kolatra.ftbislands.commands.CreateIslandsCommand;
+import com.kolatra.ftbislands.commands.DeleteIslandCommand;
+import com.kolatra.ftbislands.commands.ListIslandsCommand;
+import com.kolatra.ftbislands.util.IslandCreator;
+import com.kolatra.ftbislands.commands.CreateAllIslandsCommand;
+import com.kolatra.ftbislands.commands.JoinIslandCommand;
+import com.kolatra.ftbislands.commands.RenameIslandCommand;
+import com.kolatra.ftbislands.commands.SaveIslandsCommand;
+import com.kolatra.ftbislands.commands.SetIslandSpawnCommand;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,7 +81,7 @@ public class FTBIslands {
         logger = LogManager.getLogger("FTBI");
         File dir = event.getModConfigurationDirectory();
         File directory = new File(dir.getParentFile(), "local");
-        islands = new File(directory, "islands.ser");
+        islands = new File(directory, "islands.json");
         try {
             directory.mkdirs();
             islands.createNewFile();
@@ -80,9 +91,11 @@ public class FTBIslands {
     }
 
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
+        String s = new GsonBuilder().create().toJson(map);
         FileOutputStream outputStream = new FileOutputStream(islands);
-        ObjectOutputStream out = new ObjectOutputStream(outputStream);
-        out.writeObject(map);
+//        ObjectOutputStream out = new ObjectOutputStream(outputStream);
+        FileUtils.writeStringToFile(islands, s); // possibly?
+        DataOutputStream out = new DataOutputStream(outputStream);
         out.close();
         outputStream.close();
     }

@@ -1,4 +1,6 @@
-package com.cricketcraft.ftbisland.commands;
+package com.kolatra.ftbislands.commands;
+
+import com.kolatra.ftbislands.util.IslandUtils;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
@@ -7,13 +9,13 @@ import net.minecraft.command.ICommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateAllIslandsCommand extends CommandBase implements ICommand {
+public class RenameIslandCommand extends CommandBase implements ICommand {
     private List<String> aliases;
 
-    public CreateAllIslandsCommand() {
+    public RenameIslandCommand() {
         aliases = new ArrayList<String>();
-        aliases.add("island createall");
-        aliases.add("islands createall");
+        aliases.add("island_rename");
+        aliases.add("islands_rename");
     }
 
     @Override
@@ -28,11 +30,11 @@ public class CreateAllIslandsCommand extends CommandBase implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return aliases.get(0);
+        return "/island_rename <OldName> <NewName>";
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-
+        IslandUtils.renameIsland(input[0], input[1]);
     }
 }

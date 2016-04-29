@@ -1,12 +1,14 @@
-package com.cricketcraft.ftbisland.commands;
+package com.kolatra.ftbislands.commands;
 
-import com.cricketcraft.ftbisland.util.IslandCreator;
+import com.kolatra.ftbislands.FTBIslands;
+import com.kolatra.ftbislands.util.IslandCreator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -57,7 +59,10 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
         World world = sender.getEntityWorld();
         EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(sender.getCommandSenderName());
         if (!IslandCreator.createIsland(world, input[0], player != null ? player : null)) {
-
+            if (player != null)
+                player.addChatComponentMessage(new ChatComponentText("An island has already been created for that player!"));
+            else
+                FTBIslands.logger.info("An island has already been created for that player!");
         }
     }
 }

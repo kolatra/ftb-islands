@@ -1,39 +1,36 @@
-package com.cricketcraft.ftbisland.util;
+package com.kolatra.ftbislands.util;
 
-import com.cricketcraft.ftbisland.FTBIslands;
+import com.kolatra.ftbislands.FTBIslands;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-
-import static com.cricketcraft.ftbisland.util.IslandCreator.islandLocations;
-import static com.cricketcraft.ftbisland.util.IslandCreator.reloadIslands;
-import static com.cricketcraft.ftbisland.util.IslandCreator.save;
 
 public class IslandUtils {
 
     public static void renameIsland(String oldName, String newName) {
-        IslandCreator.IslandPos pos = islandLocations.get(oldName);
-        islandLocations.remove(oldName);
-        islandLocations.put(newName, pos);
-        save();
+        IslandCreator.IslandPos pos = IslandCreator.islandLocations.get(oldName);
+        IslandCreator.islandLocations.remove(oldName);
+        IslandCreator.islandLocations.put(newName, pos);
+        IslandCreator.save();
     }
 
     public static void setSpawnForIsland(String s, int x, int y, int z) {
         IslandCreator.IslandPos pos = new IslandCreator.IslandPos(x, y, z);
-        islandLocations.remove(s);
-        islandLocations.put(s, pos);
-        save();
+        IslandCreator.islandLocations.remove(s);
+        IslandCreator.islandLocations.put(s, pos);
+        IslandCreator.save();
     }
 
     public static void joinIsland(String islandName, EntityPlayer player) {
         if (player == null) {
             FTBIslands.logger.info("The join command must be run in game.");
         } else {
-            reloadIslands();
-            if (islandLocations.containsKey(islandName)) {
+            IslandCreator.reloadIslands();
+            if (IslandCreator.islandLocations.containsKey(islandName)) {
                 IslandCreator.IslandPos pos = new IslandCreator.IslandPos(0, 60, 0);
-                for(String key : islandLocations.keySet()) {
+                for(String key : IslandCreator.islandLocations.keySet()) {
                     if (key.equalsIgnoreCase(islandName)) {
-                        pos = islandLocations.get(key);
+                        pos = IslandCreator.islandLocations.get(key);
                     }
                 }
                 if (player.dimension != 0)
@@ -47,8 +44,8 @@ public class IslandUtils {
 
     public static void deleteIsland(String islandName, EntityPlayer player) {
         if (player != null)
-            player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, islandLocations.get(islandName))));
-        islandLocations.remove(islandName);
-        save();
+            player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, IslandCreator.islandLocations.get(islandName))));
+        IslandCreator.islandLocations.remove(islandName);
+        IslandCreator.save();
     }
 }

@@ -1,7 +1,6 @@
-package com.cricketcraft.ftbisland.util;
+package com.kolatra.ftbislands.util;
 
-import com.cricketcraft.ftbisland.FTBIslands;
-import com.google.gson.*;
+import com.kolatra.ftbislands.FTBIslands;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -15,14 +14,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class IslandCreator {
-    public static final Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandCreator.class, new IslandCreator()).create();
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
+    private static final Item chickenStick = GameRegistry.findItem("excompressum", "chickenStick");
     public final String playerName;
     public final IslandPos pos;
 
@@ -65,7 +64,6 @@ public class IslandCreator {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            Item chickenStick = GameRegistry.findItem("excompressum", "chickenStick");
             if (chickenStick != null)
                 chest.setInventorySlotContents(10, new ItemStack(chickenStick, 1));
 
@@ -111,8 +109,7 @@ public class IslandCreator {
         }
     }
 
-    public static class IslandPos implements JsonSerializer<IslandPos>, JsonDeserializer<IslandPos> {
-        //private Gson jsonSerializer = (new GsonBuilder()).setPrettyPrinting().registerTypeAdapter(IslandPos.class, new IslandPos()).create();
+    public static class IslandPos implements Serializable {
         private int x;
         private int y;
         private int z;
@@ -133,16 +130,6 @@ public class IslandCreator {
 
         public int getZ() {
             return z;
-        }
-
-        @Override
-        public IslandPos deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return null;
-        }
-
-        @Override
-        public JsonElement serialize(IslandPos pos, Type typeOfSrc, JsonSerializationContext context) {
-            return null;
         }
     }
 }
