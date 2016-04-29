@@ -97,13 +97,13 @@ public class FTBIslands {
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
         String s = new GsonBuilder().create().toJson(map);
         FileOutputStream outputStream = new FileOutputStream(islands);
-        FileUtils.writeStringToFile(islands, s); 
+        FileUtils.writeStringToFile(islands, s);
         DataOutputStream out = new DataOutputStream(outputStream);
         out.close();
         outputStream.close();
     }
 
-    public static HashMap<String, IslandCreator.IslandPos> getIslands() throws IOException, ClassNotFoundException {
+    public static HashMap<String, IslandCreator.IslandPos> getIslands() throws IOException {
         FileInputStream fileIn = new FileInputStream(islands);
         HashMap<String, IslandCreator.IslandPos> map = new Gson().fromJson(FileUtils.readFileToString(islands), new TypeToken<HashMap<String, IslandCreator.IslandPos>>(){}.getType());
         fileIn.close();
