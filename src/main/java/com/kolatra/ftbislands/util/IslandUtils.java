@@ -28,13 +28,14 @@ public class IslandUtils {
             IslandCreator.reloadIslands();
             if (IslandCreator.islandLocations.containsKey(islandName)) {
                 IslandCreator.IslandPos pos = new IslandCreator.IslandPos(0, 60, 0);
-                for(String key : IslandCreator.islandLocations.keySet()) {
+                for (String key : IslandCreator.islandLocations.keySet()) {
                     if (key.equalsIgnoreCase(islandName)) {
                         pos = IslandCreator.islandLocations.get(key);
                     }
                 }
-                if (player.dimension != 0)
+                if (player.dimension != 0) {
                     player.travelToDimension(0);
+                }
                 player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
             } else {
                 player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
@@ -43,8 +44,9 @@ public class IslandUtils {
     }
 
     public static void deleteIsland(String islandName, EntityPlayer player) {
-        if (player != null)
+        if (player != null) {
             player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, IslandCreator.islandLocations.get(islandName))));
+        }
         IslandCreator.islandLocations.remove(islandName);
         IslandCreator.save();
     }

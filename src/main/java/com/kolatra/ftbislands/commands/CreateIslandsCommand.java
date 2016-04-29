@@ -3,6 +3,9 @@ package com.kolatra.ftbislands.commands;
 import com.kolatra.ftbislands.FTBIslands;
 import com.kolatra.ftbislands.util.IslandCreator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -10,9 +13,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateIslandsCommand extends CommandBase implements ICommand {
     private List<String> aliases;
@@ -46,8 +46,8 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] input) {
         return input.length == 1 ? getListOfStringsMatchingLastWord(input, getPlayers())
-        : (input.length == 2 ? getListOfStringsMatchingLastWord(input, getPlayers())
-        : null);
+                : (input.length == 2 ? getListOfStringsMatchingLastWord(input, getPlayers())
+                : null);
     }
 
     protected String[] getPlayers() {
@@ -59,10 +59,11 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
         World world = sender.getEntityWorld();
         EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(sender.getCommandSenderName());
         if (!IslandCreator.createIsland(world, input[0], player != null ? player : null)) {
-            if (player != null)
+            if (player != null) {
                 player.addChatComponentMessage(new ChatComponentText("An island has already been created for that player!"));
-            else
+            } else {
                 FTBIslands.logger.info("An island has already been created for that player!");
+            }
         }
     }
 }

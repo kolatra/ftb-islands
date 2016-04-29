@@ -2,6 +2,13 @@ package com.kolatra.ftbislands.util;
 
 import com.kolatra.ftbislands.FTBIslands;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,14 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashMap;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class IslandCreator {
     public static HashMap<String, IslandPos> islandLocations = new HashMap<String, IslandPos>();
@@ -44,7 +45,7 @@ public class IslandCreator {
 
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
-        if(!islandLocations.containsKey(playerName)) {
+        if (!islandLocations.containsKey(playerName)) {
             for (int c = 0; c < 3; c++) {
                 for (int d = 0; d < 3; d++) {
                     world.setBlock(x + c, y, z + d, Blocks.dirt);
@@ -64,8 +65,9 @@ public class IslandCreator {
             chest.setInventorySlotContents(7, new ItemStack(Items.spawn_egg, 2, 91));
             chest.setInventorySlotContents(8, new ItemStack(Items.spawn_egg, 2, 92));
             chest.setInventorySlotContents(9, new ItemStack(Items.spawn_egg, 2, 93));
-            if (chickenStick != null)
+            if (chickenStick != null) {
                 chest.setInventorySlotContents(10, new ItemStack(chickenStick, 1));
+            }
 
             if (islandLocations.size() != 0) {
                 islandLocations.put(playerName, FTBIslands.islandLoc.get(islandLocations.size() + 1));
@@ -79,10 +81,11 @@ public class IslandCreator {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (player != null)
+            if (player != null) {
                 player.addChatMessage(new ChatComponentText(String.format("Created island named %s at %d, %d, %d", playerName, x, y, z)));
-            else
+            } else {
                 FTBIslands.logger.info(String.format("Created island named %s at %d %d %d", playerName, x, y, z));
+            }
             return true;
         } else {
             return false;

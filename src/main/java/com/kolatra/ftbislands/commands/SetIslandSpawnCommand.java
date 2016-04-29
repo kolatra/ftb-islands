@@ -1,11 +1,11 @@
 package com.kolatra.ftbislands.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SetIslandSpawnCommand extends CommandBase implements ICommand {
     private List<String> aliases;

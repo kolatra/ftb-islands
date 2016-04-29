@@ -2,7 +2,6 @@ package com.kolatra.ftbislands;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.kolatra.ftbislands.commands.CreateAllIslandsCommand;
 import com.kolatra.ftbislands.commands.CreateIslandsCommand;
@@ -22,16 +21,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-
-import net.minecraft.client.util.JsonException;
 
 @Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:FTBU", acceptableRemoteVersions = "*")
 public class FTBIslands {
@@ -60,13 +55,13 @@ public class FTBIslands {
     }
 
     private void loadIslands() {
-        for(int c = 0; c < 100; c++) {
+        for (int c = 0; c < 100; c++) {
             addIslandToList(c);
         }
     }
 
     private void addIslandToList(int x) {
-        if(x != 0) {
+        if (x != 0) {
             islandLoc.add(new IslandCreator.IslandPos(x * 1000, 60, x * 1000));
             islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, x * 1000));
             islandLoc.add(new IslandCreator.IslandPos(-x * 1000, 60, -x * 1000));
@@ -89,7 +84,7 @@ public class FTBIslands {
         try {
             directory.mkdirs();
             islands.createNewFile();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

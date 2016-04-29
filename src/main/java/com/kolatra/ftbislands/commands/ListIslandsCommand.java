@@ -3,16 +3,16 @@ package com.kolatra.ftbislands.commands;
 import com.kolatra.ftbislands.FTBIslands;
 import com.kolatra.ftbislands.util.IslandCreator;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ListIslandsCommand extends CommandBase implements ICommand {
     private List<String> aliases;

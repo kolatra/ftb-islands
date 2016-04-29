@@ -2,12 +2,12 @@ package com.kolatra.ftbislands.commands;
 
 import com.kolatra.ftbislands.util.IslandUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RenameIslandCommand extends CommandBase implements ICommand {
     private List<String> aliases;

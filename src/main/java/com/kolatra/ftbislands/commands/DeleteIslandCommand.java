@@ -3,15 +3,15 @@ package com.kolatra.ftbislands.commands;
 import com.kolatra.ftbislands.FTBIslands;
 import com.kolatra.ftbislands.util.IslandUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DeleteIslandCommand extends CommandBase implements ICommand {
     private List<String> aliases;
