@@ -3,7 +3,6 @@ package com.kolatra.ftbislands;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kolatra.ftbislands.commands.CreateAllIslandsCommand;
 import com.kolatra.ftbislands.commands.CreateIslandsCommand;
 import com.kolatra.ftbislands.commands.DeleteIslandCommand;
 import com.kolatra.ftbislands.commands.JoinIslandCommand;
@@ -16,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,15 +22,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = FTBIslands.MODID, name = FTBIslands.NAME, version = FTBIslands.VERSION, dependencies = "required-after:FTBU", acceptableRemoteVersions = "*")
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
     public static final String VERSION = "1.1.1";
+    public static int maxIslands;
     public static File islands;
     public static Logger logger;
 
@@ -41,7 +44,6 @@ public class FTBIslands {
     @Mod.EventHandler
     public void serverLoading(FMLServerStartingEvent event) {
         logger.info("Registering commands.");
-        event.registerServerCommand(new CreateAllIslandsCommand());
         event.registerServerCommand(new CreateIslandsCommand());
         event.registerServerCommand(new DeleteIslandCommand());
         event.registerServerCommand(new JoinIslandCommand());
@@ -55,7 +57,7 @@ public class FTBIslands {
     }
 
     private void loadIslands() {
-        for (int c = 0; c < 100; c++) {
+        for (int c = 0; c < maxIslands; c++) {
             addIslandToList(c);
         }
     }
@@ -77,6 +79,7 @@ public class FTBIslands {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        Config.init(new File(event.getModConfigurationDirectory(), "ftbi/FTB_Islands.cfg"));
         logger = LogManager.getLogger("FTBI");
         File dir = event.getModConfigurationDirectory();
         File directory = new File(dir.getParentFile(), "local");
@@ -101,5 +104,30 @@ public class FTBIslands {
         HashMap<String, IslandCreator.IslandPos> map = new Gson().fromJson(FileUtils.readFileToString(islands), new TypeToken<HashMap<String, IslandCreator.IslandPos>>(){}.getType());
         fileIn.close();
         return map;
+    }
+
+    private static class Config {
+        private static Configuration config;
+
+        public static void init(File file) {
+            if (config == null) {
+                config = new Configuration(file);
+                loadConfig();
+            }
+        }
+
+        private static void loadConfig() {
+            FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
+                    " Be careful with high numbers.");
+
+            if (config.hasChanged())
+                config.save();
+        }
+
+        @SubscribeEvent
+        public void onChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+            if (event.modID.equalsIgnoreCase(FTBIslands.MODID))
+                loadConfig();
+        }
     }
 }

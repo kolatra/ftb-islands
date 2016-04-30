@@ -35,8 +35,6 @@ public class SaveIslandsCommand extends CommandBase implements ICommand {
             FTBIslands.saveIslands(FTBIslands.getIslands());
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }

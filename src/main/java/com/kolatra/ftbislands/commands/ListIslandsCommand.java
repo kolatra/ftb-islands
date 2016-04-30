@@ -44,8 +44,6 @@ public class ListIslandsCommand extends CommandBase implements ICommand {
             //FTBIslands.getIslands().forEach((k, v) -> player.addChatComponentMessage(new ChatComponentText(k)));
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }
