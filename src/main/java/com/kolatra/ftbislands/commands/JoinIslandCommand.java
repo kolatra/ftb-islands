@@ -48,7 +48,7 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
             sender.addChatMessage(new ChatComponentText("Invalid arguments!"));
         } else {
             boolean friends = LMWorldServer.inst.getPlayer(player).isFriend(LMWorldServer.inst.getPlayer(input[0]));
-            if (friends || input[0].equals(sender.getCommandSenderName())) {
+            if (friends || input[0].equals(player.getCommandSenderName())) {
                 IslandUtils.joinIsland(input[0], player); // TODO this needs to be tested
             } else {
                 sender.addChatMessage(new ChatComponentText("The selected player is not your friend!"));
