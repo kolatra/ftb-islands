@@ -93,8 +93,6 @@ public class FTBIslands {
         String s = new GsonBuilder().create().toJson(map);
         FileOutputStream outputStream = new FileOutputStream(islands);
         FileUtils.writeStringToFile(islands, s);
-        DataOutputStream out = new DataOutputStream(outputStream);
-        out.close();
         outputStream.close();
     }
 

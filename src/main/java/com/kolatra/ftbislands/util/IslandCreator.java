@@ -99,8 +99,6 @@ public class IslandCreator {
             // silent catch
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

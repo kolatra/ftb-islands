@@ -1,5 +1,7 @@
 package com.kolatra.ftbislands.commands;
 
+import com.kolatra.ftbislands.util.IslandUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,6 @@ public class SetIslandSpawnCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-        //IslandUtils.setSpawnForIsland(input[0], Integer.getInteger(input[1]), Integer.getInteger(input[2]), Integer.getInteger(input[3]));
+        IslandUtils.setSpawnForIsland(input[0], Integer.getInteger(input[1]), Integer.getInteger(input[2]), Integer.getInteger(input[3]));
     }
 }
