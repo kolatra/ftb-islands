@@ -162,6 +162,7 @@ public class FTBIslands {
         FileOutputStream outputStream = new FileOutputStream(newFile);
         FileUtils.writeStringToFile(newFile, s);
         outputStream.close();
+        oldIslands.delete();
         logger.info("Conversion completed.");
     }
 }
