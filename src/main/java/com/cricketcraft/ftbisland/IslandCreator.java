@@ -1,6 +1,6 @@
-package com.kolatra.ftbislands.util;
+package com.cricketcraft.ftbisland;
 
-import com.kolatra.ftbislands.FTBIslands;
+import com.cricketcraft.ftbisland.FTBIslands;
 
 import java.io.EOFException;
 import java.io.IOException;

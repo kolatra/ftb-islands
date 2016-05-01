@@ -1,7 +1,7 @@
-package com.kolatra.ftbislands.commands;
+package com.cricketcraft.ftbisland.commands;
 
-import com.kolatra.ftbislands.FTBIslands;
-import com.kolatra.ftbislands.util.IslandCreator;
+import com.cricketcraft.ftbisland.FTBIslands;
+import com.cricketcraft.ftbisland.IslandCreator;
 
 import java.util.ArrayList;
 import java.util.List;

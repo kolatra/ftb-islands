@@ -1,19 +1,15 @@
-package com.kolatra.ftbislands.commands;
+package com.cricketcraft.ftbisland.commands;
 
-import com.kolatra.ftbislands.util.IslandUtils;
-import com.mojang.authlib.GameProfile;
-import ftb.utils.api.FriendsAPI;
+import com.cricketcraft.ftbisland.IslandUtils;
 import ftb.utils.world.LMWorldServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
 public class JoinIslandCommand extends CommandBase implements ICommand {

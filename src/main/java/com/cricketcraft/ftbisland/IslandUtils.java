@@ -1,6 +1,7 @@
-package com.kolatra.ftbislands.util;
+package com.cricketcraft.ftbisland;
 
-import com.kolatra.ftbislands.FTBIslands;
+import com.cricketcraft.ftbisland.FTBIslands;
+import com.cricketcraft.ftbisland.IslandCreator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;

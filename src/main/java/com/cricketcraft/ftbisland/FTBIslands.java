@@ -1,24 +1,25 @@
-package com.kolatra.ftbislands;
+package com.cricketcraft.ftbisland;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.kolatra.ftbislands.commands.CreateIslandsCommand;
-import com.kolatra.ftbislands.commands.DeleteIslandCommand;
-import com.kolatra.ftbislands.commands.JoinIslandCommand;
-import com.kolatra.ftbislands.commands.ListIslandsCommand;
-import com.kolatra.ftbislands.commands.RenameIslandCommand;
-import com.kolatra.ftbislands.commands.SaveIslandsCommand;
-import com.kolatra.ftbislands.commands.SetIslandSpawnCommand;
-import com.kolatra.ftbislands.util.IslandCreator;
+import com.cricketcraft.ftbisland.commands.CreateIslandsCommand;
+import com.cricketcraft.ftbisland.commands.DeleteIslandCommand;
+import com.cricketcraft.ftbisland.commands.JoinIslandCommand;
+import com.cricketcraft.ftbisland.commands.ListIslandsCommand;
+import com.cricketcraft.ftbisland.commands.RenameIslandCommand;
+import com.cricketcraft.ftbisland.commands.SaveIslandsCommand;
+import com.cricketcraft.ftbisland.commands.SetIslandSpawnCommand;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,6 +39,8 @@ public class FTBIslands {
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
+    private static File oldIslands;
+    private static File directory;
 
     public static ArrayList<IslandCreator.IslandPos> islandLoc = new ArrayList<IslandCreator.IslandPos>();
 
@@ -82,8 +85,19 @@ public class FTBIslands {
         Config.init(new File(event.getModConfigurationDirectory(), "ftbi/FTB_Islands.cfg"));
         logger = LogManager.getLogger("FTBI");
         File dir = event.getModConfigurationDirectory();
-        File directory = new File(dir.getParentFile(), "local");
+        directory = new File(dir.getParentFile(), "local");
+        oldIslands = new File(directory, "islands.ser");
         islands = new File(directory, "islands.json");
+        if (oldIslands.exists()) {
+            logger.info("Islands.ser found, attempting conversion.");
+            try {
+                convert();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             directory.mkdirs();
             islands.createNewFile();
@@ -129,5 +143,25 @@ public class FTBIslands {
             if (event.modID.equalsIgnoreCase(FTBIslands.MODID))
                 loadConfig();
         }
+    }
+
+    private static void convert() throws IOException, ClassNotFoundException {
+        if (!oldIslands.exists())
+            return;
+        logger.info("Old islands file found! Trying to convert to new format!");
+
+        FileInputStream fileIn = new FileInputStream(oldIslands);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+
+        HashMap<String, IslandCreator.IslandPos> map = (HashMap<String, IslandCreator.IslandPos>) in.readObject();
+        in.close();
+        fileIn.close();
+        String s = new GsonBuilder().create().toJson(map);
+
+        File newFile = new File(directory, "islands.json");
+        FileOutputStream outputStream = new FileOutputStream(newFile);
+        FileUtils.writeStringToFile(newFile, s);
+        outputStream.close();
+        logger.info("Conversion completed.");
     }
 }
