@@ -15,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,6 +38,7 @@ public class FTBIslands {
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
+    public static boolean skyFactory;
     private static File oldIslands;
     private static File directory;
 
@@ -133,6 +133,7 @@ public class FTBIslands {
         private static void loadConfig() {
             FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
                     " Be careful with high numbers.");
+            FTBIslands.skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
 
             if (config.hasChanged())
                 config.save();

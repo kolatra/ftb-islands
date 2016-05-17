@@ -20,6 +20,11 @@ public class SaveIslandsCommand extends CommandBase implements ICommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
+
+    @Override
     public String getCommandName() {
         return aliases.get(0);
     }

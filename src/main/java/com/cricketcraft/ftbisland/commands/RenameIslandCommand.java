@@ -19,6 +19,11 @@ public class RenameIslandCommand extends CommandBase implements ICommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
+
+    @Override
     public List getCommandAliases() {
         return aliases;
     }
