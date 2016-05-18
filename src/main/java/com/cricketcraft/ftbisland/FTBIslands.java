@@ -41,11 +41,12 @@ import net.minecraftforge.common.config.Configuration;
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
-    public static final String VERSION = "1.2.1";
+    public static final String VERSION = "1.3.0-alpha";
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
     public static boolean skyFactory;
+    public static boolean platform;
     private static File oldIslands;
     private static File directory;
 
@@ -154,6 +155,7 @@ public class FTBIslands {
             FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
                     " Be careful with high numbers.");
             FTBIslands.skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
+            FTBIslands.platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
 
             if (config.hasChanged())
                 config.save();
