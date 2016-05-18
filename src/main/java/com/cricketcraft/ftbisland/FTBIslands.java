@@ -14,10 +14,14 @@ import com.cricketcraft.ftbisland.commands.SetIslandSpawnCommand;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.rmi.log.LogHandler;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.charset.Charset;
@@ -26,6 +30,7 @@ import java.util.HashMap;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -105,6 +110,20 @@ public class FTBIslands {
             islands.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(islands.getPath()));
+        if (br.readLine() == null) {
+            logger.info("Islands file empty, placing a default value.");
+            IslandCreator.islandLocations.put("default", new IslandCreator.IslandPos(0, 60, 0));
+            try {
+                saveIslands(IslandCreator.islandLocations);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
