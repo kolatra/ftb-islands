@@ -45,7 +45,8 @@ public class IslandUtils {
                 if (player.dimension != 0) {
                     player.travelToDimension(0);
                 }
-                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 1.5);
+                int yNumber = FTBIslands.skyFactory ? 6 : 2;
+                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + yNumber, pos.getZ() + 1.5);
             } else {
                 player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
             }

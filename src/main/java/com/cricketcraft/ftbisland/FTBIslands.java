@@ -1,9 +1,5 @@
 package com.cricketcraft.ftbisland;
 
-import com.google.common.base.Utf8;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.cricketcraft.ftbisland.commands.CreateIslandsCommand;
 import com.cricketcraft.ftbisland.commands.DeleteIslandCommand;
 import com.cricketcraft.ftbisland.commands.JoinIslandCommand;
@@ -11,20 +7,20 @@ import com.cricketcraft.ftbisland.commands.ListIslandsCommand;
 import com.cricketcraft.ftbisland.commands.RenameIslandCommand;
 import com.cricketcraft.ftbisland.commands.SaveIslandsCommand;
 import com.cricketcraft.ftbisland.commands.SetIslandSpawnCommand;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.rmi.log.LogHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,7 +37,7 @@ import net.minecraftforge.common.config.Configuration;
 public class FTBIslands {
     public static final String MODID = "FTBI";
     public static final String NAME = "FTB Islands";
-    public static final String VERSION = "1.3.0-alpha";
+    public static final String VERSION = "1.3.0";
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
