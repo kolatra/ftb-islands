@@ -37,18 +37,45 @@ public class IslandCreator {
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if (!islandLocations.containsKey(playerName)) {
-            for (int c = 0; c < 3; c++) {
-                for (int d = 0; d < 3; d++) {
-                    world.setBlock(x + c, y, z + d, Blocks.dirt);
-                }
-            }
-
-            world.setBlock(x + 2, y + 1, z + 1, Blocks.chest);
-            world.getBlock(x + 2, y + 1, z + 1).rotateBlock(world, x + 2, y + 1, z + 1, ForgeDirection.WEST);
-            TileEntityChest chest = (TileEntityChest) world.getTileEntity(x + 2, y + 1, z + 1);
             if (FTBIslands.skyFactory) {
-                chest.setInventorySlotContents(0, new ItemStack(Blocks.sapling, 1, 0));
+                world.setBlock(x, y, z, Blocks.dirt);
+                for(int c = 0; c < 5; c++ ) {
+                    for(int d = 0; d < 5; d++) {
+                        for(int e = 3; e < 5; e++) {
+                            world.setBlock(x + c, y + e, d + z, Blocks.leaves);
+                        }
+                    }
+                }
+
+                for(int c = 0; c < 3; c++ ) {
+                    for(int d = 0; d < 3; d++) {
+                        for(int e = 5; e < 7; e++ ) {
+                            world.setBlock(x + c, y + e, d + z, Blocks.leaves);
+                        }
+                    }
+                }
+
+                world.setBlock(x, y + 8, z, Blocks.leaves);
+                world.setBlock(x + 1, y + 8, z, Blocks.leaves);
+                world.setBlock(x, y + 8, z + 1, Blocks.leaves);
+                world.setBlock(x - 1, y + 8, z, Blocks.leaves);
+                world.setBlock(x, y + 8, z - 1, Blocks.leaves);
+                world.setBlockToAir(x + 5, y + 4, z + 5);
+
+                for(int c = 0; c < 5; c++ ) {
+                    world.setBlock(x, y + c + 1, z, Blocks.log);
+                }
             } else {
+                for (int c = 0; c < 3; c++) {
+                    for (int d = 0; d < 3; d++) {
+                        world.setBlock(x + c, y, z + d, Blocks.dirt);
+                    }
+                }
+
+                world.setBlock(x + 2, y + 1, z + 1, Blocks.chest);
+                world.getBlock(x + 2, y + 1, z + 1).rotateBlock(world, x + 2, y + 1, z + 1, ForgeDirection.WEST);
+                TileEntityChest chest = (TileEntityChest) world.getTileEntity(x + 2, y + 1, z + 1);
+
                 chest.setInventorySlotContents(0, new ItemStack(Blocks.flowing_water, 1));
                 chest.setInventorySlotContents(1, new ItemStack(Blocks.flowing_lava, 1));
                 chest.setInventorySlotContents(2, new ItemStack(Items.dye, 64, 15));
