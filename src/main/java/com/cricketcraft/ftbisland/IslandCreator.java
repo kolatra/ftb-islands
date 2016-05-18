@@ -1,7 +1,5 @@
 package com.cricketcraft.ftbisland;
 
-import com.cricketcraft.ftbisland.FTBIslands;
-
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,13 +32,6 @@ public class IslandCreator {
     public IslandCreator(String playerName, IslandPos pos) {
         this.playerName = playerName;
         this.pos = pos;
-    }
-
-    public static boolean createIsland(World world, String playerName, EntityPlayer player) {
-        reloadIslands();
-        IslandPos pos = FTBIslands.islandLoc.get(islandLocations.size() + 1);
-        spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName, (player != null ? player : null));
-        return true;
     }
 
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {

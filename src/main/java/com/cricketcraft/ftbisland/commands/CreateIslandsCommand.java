@@ -2,6 +2,7 @@ package com.cricketcraft.ftbisland.commands;
 
 import com.cricketcraft.ftbisland.FTBIslands;
 import com.cricketcraft.ftbisland.IslandCreator;
+import com.cricketcraft.ftbisland.IslandUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +59,11 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
     public void processCommand(ICommandSender sender, String[] input) {
         World world = sender.getEntityWorld();
         EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(sender.getCommandSenderName());
-        if (!IslandCreator.createIsland(world, input[0], player != null ? player : null)) {
+        if (!IslandUtils.createIsland(world, input[0], player != null ? player : null)) {
             if (player != null) {
                 player.addChatComponentMessage(new ChatComponentText("An island has already been created for that player!"));
             } else {
-                FTBIslands.logger.info("An island has already been created for that player!");
+                FTBIslands.logger.info("An island has already been created for that player or something is broken!");
             }
         }
     }

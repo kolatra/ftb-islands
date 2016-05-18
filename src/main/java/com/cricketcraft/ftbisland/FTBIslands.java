@@ -1,5 +1,6 @@
 package com.cricketcraft.ftbisland;
 
+import com.google.common.base.Utf8;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -108,15 +110,14 @@ public class FTBIslands {
 
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
         String s = new GsonBuilder().create().toJson(map);
-        FileOutputStream outputStream = new FileOutputStream(islands);
         FileUtils.writeStringToFile(islands, s);
-        outputStream.close();
     }
 
     public static HashMap<String, IslandCreator.IslandPos> getIslands() throws IOException {
-        FileInputStream fileIn = new FileInputStream(islands);
+        FileInputStream stream = new FileInputStream(islands);
+        // {"test3":{"x":1000,"y":60,"z":1000},"test":{"x":-1000,"y":60,"z":1000},"dev":{"x":-1000,"y":60,"z":-1000}}
         HashMap<String, IslandCreator.IslandPos> map = new Gson().fromJson(FileUtils.readFileToString(islands), new TypeToken<HashMap<String, IslandCreator.IslandPos>>(){}.getType());
-        fileIn.close();
+        stream.close();
         return map;
     }
 

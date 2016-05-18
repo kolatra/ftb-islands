@@ -1,12 +1,20 @@
 package com.cricketcraft.ftbisland;
 
-import com.cricketcraft.ftbisland.FTBIslands;
-import com.cricketcraft.ftbisland.IslandCreator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
 public class IslandUtils {
+    public static boolean createIsland(World world, String playerName, EntityPlayer player) {
+        IslandCreator.reloadIslands();
+        if (IslandCreator.islandLocations == null) {
+            FTBIslands.logger.info("Island locations are null?? Empty possibly.");
+            return false;
+        }
+        IslandCreator.IslandPos pos = FTBIslands.islandLoc.get(IslandCreator.islandLocations.size() + 1);
+        IslandCreator.spawnIslandAt(world, pos.getX(), pos.getY(), pos.getZ(), playerName, (player != null ? player : null));
+        return true;
+    }
 
     public static void renameIsland(String oldName, String newName) {
         IslandCreator.IslandPos pos = IslandCreator.islandLocations.get(oldName);
