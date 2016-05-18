@@ -46,19 +46,18 @@ public class IslandCreator {
                         }
                     }
                 }
-
                 for(int c = -2; c < 1; c++ ) {
                     for(int d = -2; d < 1; d++) {
                         world.setBlock(x + (c) + 1, y + 5, d + (z) + 1, Blocks.leaves);
                     }
                 }
 
-                world.setBlock(x, y + 7, z, Blocks.leaves);
-                world.setBlock(x + 1, y + 7, z, Blocks.leaves);
-                world.setBlock(x, y + 7, z + 1, Blocks.leaves);
-                world.setBlock(x - 1, y + 7, z, Blocks.leaves);
-                world.setBlock(x, y + 7, z - 1, Blocks.leaves);
-                world.setBlockToAir(x + 2, y + 5, z + 2);
+                world.setBlock(x, y + 6, z, Blocks.leaves);
+                world.setBlock(x + 1, y + 6, z, Blocks.leaves);
+                world.setBlock(x, y + 6, z + 1, Blocks.leaves);
+                world.setBlock(x - 1, y + 6, z, Blocks.leaves);
+                world.setBlock(x, y + 6, z - 1, Blocks.leaves);
+                world.setBlockToAir(x + 2, y + 4, z + 2);
 
                 for(int c = 0; c < 5; c++ ) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);

@@ -42,7 +42,7 @@ public class DeleteIslandCommand extends CommandBase implements ICommand {
         World world = sender.getEntityWorld();
         EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(sender.getCommandSenderName());
         boolean exists = player != null;
-        IslandUtils.deleteIsland(input[0], exists ? player : null);
+        IslandUtils.deleteIsland(input[0]);
         if (exists) {
             player.addChatComponentMessage(new ChatComponentText(String.format("Successfully deleted island %s", input[0])));
         } else {

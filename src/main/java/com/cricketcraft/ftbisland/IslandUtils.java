@@ -52,10 +52,7 @@ public class IslandUtils {
         }
     }
 
-    public static void deleteIsland(String islandName, EntityPlayer player) {
-        if (player != null) {
-            player.addChatMessage(new ChatComponentText(String.format("Deleted Island %s at %d", islandName, IslandCreator.islandLocations.get(islandName))));
-        }
+    public static void deleteIsland(String islandName) {
         IslandCreator.islandLocations.remove(islandName);
         IslandCreator.save();
     }
