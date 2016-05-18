@@ -39,28 +39,26 @@ public class IslandCreator {
         if (!islandLocations.containsKey(playerName)) {
             if (FTBIslands.skyFactory) {
                 world.setBlock(x, y, z, Blocks.dirt);
-                for(int c = 0; c < 5; c++ ) {
-                    for(int d = 0; d < 5; d++) {
+                for(int c = -3; c < 2; c++ ) {
+                    for(int d = -3; d < 2; d++) {
                         for(int e = 3; e < 5; e++) {
-                            world.setBlock(x + c, y + e, d + z, Blocks.leaves);
+                            world.setBlock(x + (c) + 1, y + e, d + (z) + 1, Blocks.leaves);
                         }
                     }
                 }
 
-                for(int c = 0; c < 3; c++ ) {
-                    for(int d = 0; d < 3; d++) {
-                        for(int e = 5; e < 7; e++ ) {
-                            world.setBlock(x + c, y + e, d + z, Blocks.leaves);
-                        }
+                for(int c = -2; c < 1; c++ ) {
+                    for(int d = -2; d < 1; d++) {
+                        world.setBlock(x + (c) + 1, y + 5, d + (z) + 1, Blocks.leaves);
                     }
                 }
 
-                world.setBlock(x, y + 8, z, Blocks.leaves);
-                world.setBlock(x + 1, y + 8, z, Blocks.leaves);
-                world.setBlock(x, y + 8, z + 1, Blocks.leaves);
-                world.setBlock(x - 1, y + 8, z, Blocks.leaves);
-                world.setBlock(x, y + 8, z - 1, Blocks.leaves);
-                world.setBlockToAir(x + 5, y + 4, z + 5);
+                world.setBlock(x, y + 7, z, Blocks.leaves);
+                world.setBlock(x + 1, y + 7, z, Blocks.leaves);
+                world.setBlock(x, y + 7, z + 1, Blocks.leaves);
+                world.setBlock(x - 1, y + 7, z, Blocks.leaves);
+                world.setBlock(x, y + 7, z - 1, Blocks.leaves);
+                world.setBlockToAir(x + 2, y + 5, z + 2);
 
                 for(int c = 0; c < 5; c++ ) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);
