@@ -10,6 +10,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -61,10 +62,5 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
                 FTBIslands.logger.info("An island has already been created for that player or something is broken!");
             }
         }
-    }
-
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
-        return true;
     }
 }
