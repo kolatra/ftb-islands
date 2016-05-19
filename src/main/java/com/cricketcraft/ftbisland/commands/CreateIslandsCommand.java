@@ -35,11 +35,6 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
     }
 
     @Override
-    public int getRequiredPermissionLevel() {
-        return 2;
-    }
-
-    @Override
     public String getCommandUsage(ICommandSender sender) {
         return "island_create <name> or create <name> <player>";
     }
@@ -66,5 +61,10 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
                 FTBIslands.logger.info("An island has already been created for that player or something is broken!");
             }
         }
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+        return true;
     }
 }

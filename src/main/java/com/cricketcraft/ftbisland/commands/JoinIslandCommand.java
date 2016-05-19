@@ -46,4 +46,9 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
             IslandUtils.joinIsland(input[0], player);
         }
     }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
+        return true;
+    }
 }
