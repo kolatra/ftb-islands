@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraft.tileentity.TileEntitySign;
+
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,8 +39,9 @@ public class IslandCreator {
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if (!islandLocations.containsKey(playerName)) {
-            if (FTBIslands.skyFactory) {
-                world.setBlock(x, y, z, Blocks.dirt);
+        	// Creates a standard Sky Factory island: Small Oak Tree on a block of Grass
+            if (FTBIslands.islandType.equalsIgnoreCase("tree")) {
+                world.setBlock(x, y, z, Blocks.grass);
                 for(int c = -3; c < 2; c++ ) {
                     for(int d = -3; d < 2; d++) {
                         for(int e = 3; e < 5; e++) {
@@ -62,6 +65,12 @@ public class IslandCreator {
                 for(int c = 0; c < 5; c++ ) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);
                 }
+            // Creates an island of a single block of grass with a sign -- #GrassBlockChallenge from Darkosto
+            } else if (FTBIslands.islandType.equalsIgnoreCase("grass")) {
+        		world.setBlock(x, y, z, Blocks.grass);
+	 			world.setBlock(x, y + 1, z, Blocks.standing_sign, 6 , 3);
+	 			((TileEntitySign) world.getTileEntity(x, y + 1, z)).signText[0] = "You get it yet?";
+            // Creates a 3x3 platform of dirt with a chest on it, defaults to this if no other types are selected.
             } else {
                 for (int c = 0; c < 3; c++) {
                     for (int d = 0; d < 3; d++) {
