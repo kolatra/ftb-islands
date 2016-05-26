@@ -1,10 +1,12 @@
 package com.cricketcraft.ftbisland;
 
+import java.awt.Color;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +19,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.tileentity.TileEntitySign;
 
-
+import vazkii.botania.common.world.SkyblockWorldEvents;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class IslandCreator {
@@ -70,8 +72,20 @@ public class IslandCreator {
         		world.setBlock(x, y, z, Blocks.grass);
 	 			world.setBlock(x, y + 1, z, Blocks.standing_sign, 6 , 3);
 	 			((TileEntitySign) world.getTileEntity(x, y + 1, z)).signText[0] = "You get it yet?";
+	 		// Creates a Garden of Glass island type
+            } else if (FTBIslands.islandType.equalsIgnoreCase("GoG")) {
+        		if (Loader.isModLoaded("Botania")) {
+        			SkyblockWorldEvents.createSkyblock(world,  x,  y -1,  z);
+        		} else {
+                	for(int i = 0; i < 3; i++)
+            			for(int j = 0; j < 4; j++)
+            				for(int k = 0; k < 3; k++)
+            					world.setBlock(x - 1 + i, y - j, z - 1 + k, j == 0 ? Blocks.grass : Blocks.dirt);
+            		world.setBlock(x - 1, y - 1, z, Blocks.flowing_water);
+        		}
+            	
             // Creates a 3x3 platform of dirt with a chest on it, defaults to this if no other types are selected.
-            } else {
+        	} else {
                 for (int c = 0; c < 3; c++) {
                     for (int d = 0; d < 3; d++) {
                         world.setBlock(x + c, y, z + d, Blocks.dirt);

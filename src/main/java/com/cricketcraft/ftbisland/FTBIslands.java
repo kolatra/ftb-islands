@@ -157,7 +157,9 @@ public class FTBIslands {
                 	FTBIslands.islandType = config.getString("Island Type", "misc", "tree", "Set this to the type of platform you want:\n" +
     	            		"  'grass'     A single grass block\n" +
     	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
-    	            		"  'platform'  A 3x3 platform with a chest.");
+    	            		"  'platform'  A 3x3 platform with a chest." +
+                			"  'GoG'       A Garden of Glass island from Botania.");
+
                 	config.moveProperty("misc", "Sky Factory", "forRemoval");
                 	config.moveProperty("misc", "Platform", "forRemoval");
                 	config.removeCategory(config.getCategory("forRemoval"));
@@ -167,8 +169,24 @@ public class FTBIslands {
 	            FTBIslands.islandType = config.getString("Island Type", "misc", "platform", "Set this to the type of platform you want:\n" +
 	            		"  'grass'     A single grass block\n" +
 	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
-	            		"  'platform'  A 3x3 platform with a chest.");
-	            if (!(FTBIslands.islandType.equalsIgnoreCase("grass") || FTBIslands.islandType.equalsIgnoreCase("tree") || FTBIslands.islandType.equalsIgnoreCase("platform"))) {
+	            		"  'platform'  A 3x3 platform with a chest." +
+	            		"  'GoG'       A Garden of Glass island from Botania.");
+
+	            // list of valid types, for making new island types easier to add.
+	            ArrayList<String> validTypes = new ArrayList<String>();
+	            validTypes.add("grass");
+	            validTypes.add("tree");
+	            validTypes.add("platform");
+	            validTypes.add("GoG");
+	            
+	            boolean valid = false;
+	            for (String type : validTypes) {
+	            	if (FTBIslands.islandType.equalsIgnoreCase(type)) {
+	            		valid = true;
+	            		break;
+	            	}
+	            }
+	            if (!valid) {
             		logger.warn("Invalid config for Island Type, using 'platform' as default");
             		FTBIslands.islandType = "platform";
 	            }

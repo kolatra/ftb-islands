@@ -15,6 +15,8 @@ buildscript {
     }
 }
 
+
+
 apply plugin: 'forge'
 
 version = "1.3.1"
@@ -26,6 +28,9 @@ minecraft {
     runDir = "run"
 }
 
+dependencies {
+    compile files("lib/Botania r1.8-249.jar")
+}
 processResources
 {
     from(sourceSets.main.resources.srcDirs) {
