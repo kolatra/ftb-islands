@@ -41,8 +41,7 @@ public class FTBIslands {
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
-    public static boolean skyFactory;
-    public static boolean platform;
+    public static String islandType;
     private static File oldIslands;
     private static File directory;
 
@@ -122,6 +121,7 @@ public class FTBIslands {
                 e.printStackTrace();
             }
         }
+        br.close();
     }
 
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
@@ -148,10 +148,49 @@ public class FTBIslands {
 
         private static void loadConfig() {
             FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
-                    " Be careful with high numbers.");
-            FTBIslands.skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
-            FTBIslands.platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
+            		" Be careful with high numbers.");
+            // Convert old configs properties to new config property
+            if (!config.hasKey("misc", "Island Type")) {
+                boolean skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
+                boolean platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
+                if (skyFactory || !platform) {
+                	FTBIslands.islandType = config.getString("Island Type", "misc", "tree", "Set this to the type of platform you want:\n" +
+    	            		"  'grass'     A single grass block\n" +
+    	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
+    	            		"  'platform'  A 3x3 platform with a chest\n" +
+                			"  'GoG'       Similar to Garden of Glass island from Botania");
 
+                	config.moveProperty("misc", "Sky Factory", "forRemoval");
+                	config.moveProperty("misc", "Platform", "forRemoval");
+                	config.removeCategory(config.getCategory("forRemoval"));
+                }
+            // Otherwise get Island Type from config, check for proper config string, set to default if user has bad configs
+            } else {
+	            FTBIslands.islandType = config.getString("Island Type", "misc", "platform", "Set this to the type of platform you want:\n" +
+	            		"  'grass'     A single grass block\n" +
+	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
+	            		"  'platform'  A 3x3 platform with a chest\n" +
+	            		"  'GoG'       Similar to Garden of Glass island from Botania");
+
+	            // list of valid types, for making new island types easier to add.
+	            ArrayList<String> validTypes = new ArrayList<String>();
+	            validTypes.add("grass");
+	            validTypes.add("tree");
+	            validTypes.add("platform");
+	            validTypes.add("GoG");
+	            
+	            boolean valid = false;
+	            for (String type : validTypes) {
+	            	if (FTBIslands.islandType.equalsIgnoreCase(type)) {
+	            		valid = true;
+	            		break;
+	            	}
+	            }
+	            if (!valid) {
+            		logger.warn("Invalid config for Island Type, using 'platform' as default");
+            		FTBIslands.islandType = "platform";
+	            }
+            }
             if (config.hasChanged())
                 config.save();
         }

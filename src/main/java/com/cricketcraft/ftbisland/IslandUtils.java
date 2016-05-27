@@ -45,8 +45,10 @@ public class IslandUtils {
                 if (player.dimension != 0) {
                     player.travelToDimension(0);
                 }
-                int yNumber = FTBIslands.skyFactory ? 6 : 2;
-                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + yNumber, pos.getZ() + 1.5);
+                // Make sure you land in the right place, and don't fall off
+                int yNumber = FTBIslands.islandType.equalsIgnoreCase("tree") ? 6 : 2;
+                double vNumber = FTBIslands.islandType.equalsIgnoreCase("grass") ? 0.5 : 1.5;
+                player.setPositionAndUpdate(pos.getX() + vNumber, pos.getY() + yNumber, pos.getZ() + vNumber);
             } else {
                 player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
             }

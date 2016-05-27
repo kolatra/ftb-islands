@@ -1,10 +1,12 @@
 package com.cricketcraft.ftbisland;
 
+import java.awt.Color;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraft.tileentity.TileEntitySign;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,8 +40,10 @@ public class IslandCreator {
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if (!islandLocations.containsKey(playerName)) {
-            if (FTBIslands.skyFactory) {
-                world.setBlock(x, y, z, Blocks.dirt);
+        	
+        	// Creates a standard Sky Factory island: Small Oak Tree on a block of Grass
+            if (FTBIslands.islandType.equalsIgnoreCase("tree")) {
+                world.setBlock(x, y, z, Blocks.grass);
                 for(int c = -3; c < 2; c++ ) {
                     for(int d = -3; d < 2; d++) {
                         for(int e = 3; e < 5; e++) {
@@ -62,7 +67,57 @@ public class IslandCreator {
                 for(int c = 0; c < 5; c++ ) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);
                 }
-            } else {
+                
+            // Creates an island of a single block of grass with a sign -- #GrassBlockChallenge from Darkosto
+            } else if (FTBIslands.islandType.equalsIgnoreCase("grass")) {
+        		world.setBlock(x, y, z, Blocks.grass);
+	 			world.setBlock(x, y + 1, z, Blocks.standing_sign, 6 , 3);
+	 			((TileEntitySign) world.getTileEntity(x, y + 1, z)).signText[0] = "You get it yet?";
+	 			
+	 		// Creates a Garden of Glass island type
+	 		// This island's code is largely adapted from Botania, owned by Vazkii at: 
+	 		// https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/common/world/SkyblockWorldEvents.java#L164,
+	 		// I can't figure out any other way to accomplish creating the GoG island other than using that code to create it 
+	 		// (at least not without making it horribly coded).
+	 		// This notice should suffice to meet the Botania license as long as FTB-Islands stays open source.	
+            } else if (FTBIslands.islandType.equalsIgnoreCase("GoG")) {
+            	for(int i = 0; i < 3; i++)
+        			for(int j = 0; j < 4; j++)
+        				for(int k = 0; k < 3; k++)
+        					world.setBlock(x - 1 + i, y - j, z - 1 + k, j == 0 ? Blocks.grass : Blocks.dirt);
+        		world.setBlock(x - 1, y - 1, z, Blocks.flowing_water);
+        		
+        		int[][] roots = new int[][] {
+        				{ -1, -2, -1 },
+        				{ -1, -4, -2 },
+        				{ -2, -3, -1 },
+        				{ -2, -3, -2 },
+        				{  1, -3, -1 },
+        				{  1, -4, -1 },
+        				{  2, -4, -1 },
+        				{  2, -4,  0 }, 
+        				{  3, -5,  0 },
+        				{  0, -2,  1 },
+        				{  0, -3,  2 },
+        				{  0, -4,  3 },
+        				{  1, -4,  3 },
+        				{  1, -5,  2 },
+        				{  1, -2,  0 },
+	        		};
+	        		
+        		if (Loader.isModLoaded("Botania")) {
+        			world.setBlock(x + 1, y + 3, z + 1, GameRegistry.findBlock("Botania", "manaFlame"));
+	        		world.setBlock(x, y - 3, z, Blocks.bedrock);
+
+	        		for (int[] pos : roots)
+	        			world.setBlock(x + pos[0], y + pos[1], z + pos[2], GameRegistry.findBlock("Botania", "root"));
+        		} else {
+        			for (int[] pos: roots)
+	        			world.setBlock(x + pos[0], y + pos[1], z + pos[2], Blocks.log, 12, 3);
+        		}
+            	
+            // Creates a 3x3 platform of dirt with a chest on it, defaults to this if no other types are selected.
+        	} else {
                 for (int c = 0; c < 3; c++) {
                     for (int d = 0; d < 3; d++) {
                         world.setBlock(x + c, y, z + d, Blocks.dirt);
