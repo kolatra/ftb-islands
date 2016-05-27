@@ -149,7 +149,7 @@ public class FTBIslands {
         private static void loadConfig() {
             FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
             		" Be careful with high numbers.");
-            // Convert old configs to new config format
+            // Convert old configs properties to new config property
             if (!config.hasKey("misc", "Island Type")) {
                 boolean skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
                 boolean platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
@@ -157,8 +157,8 @@ public class FTBIslands {
                 	FTBIslands.islandType = config.getString("Island Type", "misc", "tree", "Set this to the type of platform you want:\n" +
     	            		"  'grass'     A single grass block\n" +
     	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
-    	            		"  'platform'  A 3x3 platform with a chest." +
-                			"  'GoG'       A Garden of Glass island from Botania.");
+    	            		"  'platform'  A 3x3 platform with a chest\n" +
+                			"  'GoG'       Similar to Garden of Glass island from Botania");
 
                 	config.moveProperty("misc", "Sky Factory", "forRemoval");
                 	config.moveProperty("misc", "Platform", "forRemoval");
@@ -169,8 +169,8 @@ public class FTBIslands {
 	            FTBIslands.islandType = config.getString("Island Type", "misc", "platform", "Set this to the type of platform you want:\n" +
 	            		"  'grass'     A single grass block\n" +
 	            		"  'tree'      A small oak tree on a grass block (Standard SkyFactory Island Start)\n" +
-	            		"  'platform'  A 3x3 platform with a chest." +
-	            		"  'GoG'       A Garden of Glass island from Botania.");
+	            		"  'platform'  A 3x3 platform with a chest\n" +
+	            		"  'GoG'       Similar to Garden of Glass island from Botania");
 
 	            // list of valid types, for making new island types easier to add.
 	            ArrayList<String> validTypes = new ArrayList<String>();
