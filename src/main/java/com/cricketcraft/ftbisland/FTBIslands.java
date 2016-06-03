@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.Mod;
@@ -188,20 +187,23 @@ public class FTBIslands {
                 }
             }
 
-            if (config.hasChanged())
+            if (config.hasChanged()) {
                 config.save();
+            }
         }
 
         @SubscribeEvent
         public void onChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if (event.modID.equalsIgnoreCase(FTBIslands.MODID))
+            if (event.modID.equalsIgnoreCase(FTBIslands.MODID)) {
                 loadConfig();
+            }
         }
     }
 
     private static void convert() throws IOException, ClassNotFoundException {
-        if (!oldIslands.exists())
+        if (!oldIslands.exists()) {
             return;
+        }
         logger.info("Old islands file found! Trying to convert to new format!");
 
         FileInputStream fileIn = new FileInputStream(oldIslands);

@@ -41,15 +41,15 @@ public class IslandCreator {
         if (!islandLocations.containsKey(playerName)) {
             if (FTBIslands.islandType.equalsIgnoreCase("tree")) {
                 world.setBlock(x, y, z, Blocks.grass);
-                for(int c = -3; c < 2; c++ ) {
-                    for(int d = -3; d < 2; d++) {
-                        for(int e = 3; e < 5; e++) {
+                for (int c = -3; c < 2; c++) {
+                    for (int d = -3; d < 2; d++) {
+                        for (int e = 3; e < 5; e++) {
                             world.setBlock(x + (c) + 1, y + e, d + (z) + 1, Blocks.leaves);
                         }
                     }
                 }
-                for(int c = -2; c < 1; c++ ) {
-                    for(int d = -2; d < 1; d++) {
+                for (int c = -2; c < 1; c++) {
+                    for (int d = -2; d < 1; d++) {
                         world.setBlock(x + (c) + 1, y + 5, d + (z) + 1, Blocks.leaves);
                     }
                 }
@@ -61,7 +61,7 @@ public class IslandCreator {
                 world.setBlock(x, y + 6, z - 1, Blocks.leaves);
                 world.setBlockToAir(x + 2, y + 4, z + 2);
 
-                for(int c = 0; c < 5; c++ ) {
+                for (int c = 0; c < 5; c++) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);
                 }
             } else if (FTBIslands.islandType.equalsIgnoreCase("grass")) {
@@ -78,22 +78,22 @@ public class IslandCreator {
                     }
                 }
                 world.setBlock(x - 1, y - 1, z, Blocks.flowing_water);
-                int[][] roots = new int[][] {
-                        { -1, -2, -1 },
-                        { -1, -4, -2 },
-                        { -2, -3, -1 },
-                        { -2, -3, -2 },
-                        {  1, -3, -1 },
-                        {  1, -4, -1 },
-                        {  2, -4, -1 },
-                        {  2, -4,  0 },
-                        {  3, -5,  0 },
-                        {  0, -2,  1 },
-                        {  0, -3,  2 },
-                        {  0, -4,  3 },
-                        {  1, -4,  3 },
-                        {  1, -5,  2 },
-                        {  1, -2,  0 },
+                int[][] roots = new int[][]{
+                        {-1, -2, -1},
+                        {-1, -4, -2},
+                        {-2, -3, -1},
+                        {-2, -3, -2},
+                        {1, -3, -1},
+                        {1, -4, -1},
+                        {2, -4, -1},
+                        {2, -4, 0},
+                        {3, -5, 0},
+                        {0, -2, 1},
+                        {0, -3, 2},
+                        {0, -4, 3},
+                        {1, -4, 3},
+                        {1, -5, 2},
+                        {1, -2, 0},
                 };
                 if (Loader.isModLoaded("Botania")) {
                     world.setBlock(x + 1, y + 3, z + 1, GameRegistry.findBlock("Botania", "manaFlame"));
