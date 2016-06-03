@@ -1,7 +1,9 @@
 package com.cricketcraft.ftbisland;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public class IslandUtils {
@@ -45,8 +47,17 @@ public class IslandUtils {
                 if (player.dimension != 0) {
                     player.travelToDimension(0);
                 }
-                int yNumber = FTBIslands.skyFactory ? 6 : 2;
-                player.setPositionAndUpdate(pos.getX() + 1.5, pos.getY() + yNumber, pos.getZ() + 1.5);
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
+                int height = FTBIslands.islandType.equalsIgnoreCase("tree") ? 6 : 2;
+                double xAndZ = FTBIslands.islandType.equalsIgnoreCase("grass") ? 0.5 : 1.5;
+                if (player instanceof EntityPlayerMP) {
+                    EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                    playerMP.setPositionAndUpdate(x + xAndZ, y + height, z + xAndZ);
+                    //ChunkCoordinates chunk = new ChunkCoordinates(x, y, z);
+                    //playerMP.setSpawnChunk(chunk, true);
+                }
             } else {
                 player.addChatComponentMessage(new ChatComponentText("Island does not exist!"));
             }

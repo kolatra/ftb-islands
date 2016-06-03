@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.Mod;
@@ -41,8 +42,7 @@ public class FTBIslands {
     public static int maxIslands;
     public static File islands;
     public static Logger logger;
-    public static boolean skyFactory;
-    public static boolean platform;
+    public static String islandType;
     private static File oldIslands;
     private static File directory;
 
@@ -122,6 +122,7 @@ public class FTBIslands {
                 e.printStackTrace();
             }
         }
+        br.close();
     }
 
     public static void saveIslands(HashMap<String, IslandCreator.IslandPos> map) throws IOException {
@@ -149,8 +150,43 @@ public class FTBIslands {
         private static void loadConfig() {
             FTBIslands.maxIslands = config.getInt("Max Islands", "misc", 100, 1, 1000, "The maximum amount of islands that can be created. This number will be multiplied by four." +
                     " Be careful with high numbers.");
-            FTBIslands.skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
-            FTBIslands.platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
+            if (!config.hasKey("misc", "Island Type")) {
+                boolean skyFactory = config.getBoolean("Sky Factory", "misc", false, "Set this to true if you are playing on Sky Factory.");
+                boolean platform = config.getBoolean("Platform", "misc", false, "Set to true if you want to start on a 3x3 platform, or false for a tree.");
+                if (skyFactory || !platform) {
+                    FTBIslands.islandType = config.getString("Island Type", "misc", "tree", "Set this to the type of platform you want:\n" +
+                            "  'grass'     A single grass block.\n" +
+                            "  'tree'      A small oak tree on a grass block. This is the standard start.\n" +
+                            "  'platform'  A 3x3 platform with a chest.\n" +
+                            "  'GoG'       An island similar to Garden of Glass from Botania.\n");
+                    config.moveProperty("misc", "Sky Factory", "forRemoval");
+                    config.moveProperty("misc", "Platform", "forRemoval");
+                    config.removeCategory(config.getCategory("forRemoval"));
+                }
+            } else {
+                FTBIslands.islandType = config.getString("Island Type", "misc", "tree", "Set this to the type of platform you want:\n" +
+                        "  'grass'     A single grass block.\n" +
+                        "  'tree'      A small oak tree on a grass block. This is the standard start.\n" +
+                        "  'platform'  A 3x3 platform with a chest.\n" +
+                        "  'GoG'       An island similar to Garden of Glass from Botania.\n");
+                ArrayList<String> types = new ArrayList<>();
+                types.add("grass");
+                types.add("tree");
+                types.add("platform");
+                types.add("GoG");
+
+                boolean valid = false;
+                for (String s : types) {
+                    if (FTBIslands.islandType.equalsIgnoreCase(s)) {
+                        valid = true;
+                        break;
+                    }
+                }
+                if (!valid) {
+                    logger.warn("Invalid island option detected. Using 'platform' as default.");
+                    FTBIslands.islandType = "platform";
+                }
+            }
 
             if (config.hasChanged())
                 config.save();

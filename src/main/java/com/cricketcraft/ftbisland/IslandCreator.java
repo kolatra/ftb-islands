@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
@@ -37,8 +39,8 @@ public class IslandCreator {
     public static boolean spawnIslandAt(World world, int x, int y, int z, String playerName, EntityPlayer player) {
         reloadIslands();
         if (!islandLocations.containsKey(playerName)) {
-            if (FTBIslands.skyFactory) {
-                world.setBlock(x, y, z, Blocks.dirt);
+            if (FTBIslands.islandType.equalsIgnoreCase("tree")) {
+                world.setBlock(x, y, z, Blocks.grass);
                 for(int c = -3; c < 2; c++ ) {
                     for(int d = -3; d < 2; d++) {
                         for(int e = 3; e < 5; e++) {
@@ -61,6 +63,48 @@ public class IslandCreator {
 
                 for(int c = 0; c < 5; c++ ) {
                     world.setBlock(x, y + c + 1, z, Blocks.log);
+                }
+            } else if (FTBIslands.islandType.equalsIgnoreCase("grass")) {
+                world.setBlock(x, y, z, Blocks.grass);
+                world.setBlock(x, y + 1, z, Blocks.standing_sign, 6, 3);
+                ((TileEntitySign) world.getTileEntity(x, y + 1, z)).signText[0] = "You get it yet?";
+            } else if (FTBIslands.islandType.equalsIgnoreCase("GoG")) {
+                // This is similar to how Botania itself generates an island in GoG. This is being done to avoid a soft dependency.
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        for (int k = 0; k < 3; k++) {
+                            world.setBlock(x - 1 + i, y - j, z - 1 + k, j == 0 ? Blocks.grass : Blocks.dirt);
+                        }
+                    }
+                }
+                world.setBlock(x - 1, y - 1, z, Blocks.flowing_water);
+                int[][] roots = new int[][] {
+                        { -1, -2, -1 },
+                        { -1, -4, -2 },
+                        { -2, -3, -1 },
+                        { -2, -3, -2 },
+                        {  1, -3, -1 },
+                        {  1, -4, -1 },
+                        {  2, -4, -1 },
+                        {  2, -4,  0 },
+                        {  3, -5,  0 },
+                        {  0, -2,  1 },
+                        {  0, -3,  2 },
+                        {  0, -4,  3 },
+                        {  1, -4,  3 },
+                        {  1, -5,  2 },
+                        {  1, -2,  0 },
+                };
+                if (Loader.isModLoaded("Botania")) {
+                    world.setBlock(x + 1, y + 3, z + 1, GameRegistry.findBlock("Botania", "manaFlame"));
+                    world.setBlock(x, y - 3, z, Blocks.bedrock);
+                    for (int[] pos : roots) {
+                        world.setBlock(x + pos[0], y + pos[1], z + pos[2], GameRegistry.findBlock("Botania", "root"));
+                    }
+                } else {
+                    for (int[] pos : roots) {
+                        world.setBlock(x + pos[0], y + pos[1], z + pos[2], Blocks.log, 12, 3);
+                    }
                 }
             } else {
                 for (int c = 0; c < 3; c++) {
