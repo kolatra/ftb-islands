@@ -39,6 +39,16 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
     public String getCommandUsage(ICommandSender sender) {
         return "island_join <IslandName>";
     }
+    
+    @Override
+    public List addTabCompletionOptions(ICommandSender sender, String[] input) {
+        return input.length == 1 ? getListOfStringsMatchingLastWord(input, getPlayers())
+                : null;
+    }
+
+    protected String[] getPlayers() {
+        return MinecraftServer.getServer().getAllUsernames();
+    }
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
