@@ -39,6 +39,11 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
     }
 
     @Override
+    public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
+        return true;
+    }
+
+    @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] input) {
         return input.length == 1 ? getListOfStringsMatchingLastWord(input, getPlayers())
                 : (input.length == 2 ? getListOfStringsMatchingLastWord(input, getPlayers())
