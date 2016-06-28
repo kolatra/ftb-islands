@@ -39,6 +39,11 @@ public class CreateIslandsCommand extends CommandBase implements ICommand {
     }
 
     @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
+
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
         return true;
     }
