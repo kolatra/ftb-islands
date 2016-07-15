@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 public class SetIslandSpawnCommand extends CommandBase implements ICommand {
     private List<String> aliases;
@@ -30,6 +31,11 @@ public class SetIslandSpawnCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-        IslandUtils.setSpawnForIsland(input[0], Integer.getInteger(input[1]), Integer.getInteger(input[2]), Integer.getInteger(input[3]));
+        String islandName = input[0];
+        int x = Integer.parseInt(input[1]);
+        int y = Integer.parseInt(input[2]);
+        int z = Integer.parseInt(input[3]);
+        IslandUtils.setSpawnForIsland(islandName, x, y, z);
+        sender.addChatMessage(new ChatComponentText("Island Spawn set."));
     }
 }
