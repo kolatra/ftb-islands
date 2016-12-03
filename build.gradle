@@ -17,7 +17,10 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.3.1"
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+version = "1.3.2"
 group= "com.cricketcraft.ftbisland"
 archivesBaseName = "ftbisland"
 
