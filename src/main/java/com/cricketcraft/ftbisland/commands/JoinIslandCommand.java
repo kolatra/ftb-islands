@@ -53,7 +53,7 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-        EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+        EntityPlayerMP player = getPlayer(sender, input[0]);
 
         if (input.length == 0) {
             sender.addChatMessage(new ChatComponentText("Invalid arguments!"));
