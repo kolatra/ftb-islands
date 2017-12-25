@@ -38,12 +38,12 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "island_join <IslandName>";
+        return "island_join <IslandName> [PlayerName]";
     }
     
     @Override
     public List addTabCompletionOptions(ICommandSender sender, String[] input) {
-        return input.length == 1 ? getListOfStringsMatchingLastWord(input, getPlayers())
+        return input.length == 2 ? getListOfStringsMatchingLastWord(input, getPlayers())
                 : null;
     }
 
@@ -53,13 +53,16 @@ public class JoinIslandCommand extends CommandBase implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] input) {
-        EntityPlayerMP player = getPlayer(sender, input[0]);
-
-        if (input.length == 0) {
-            sender.addChatMessage(new ChatComponentText("Invalid arguments!"));
+        EntityPlayerMP player = null;
+        if (input.length == 1) {
+            player = getCommandSenderAsPlayer(sender);
+        } else if (input.length == 2) {
+            player = getPlayer(sender, input[1]);
         } else {
-            IslandUtils.joinIsland(input[0], player);
+            sender.addChatMessage(new ChatComponentText("Invalid arguments!"));
+            return;
         }
+        IslandUtils.joinIsland(input[0], player);
     }
 
     @Override
